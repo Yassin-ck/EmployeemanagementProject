@@ -12,6 +12,6 @@ class AttendenceTable(models.Model):
     employee = models.ForeignKey(User,on_delete=models.CASCADE)
     year = models.IntegerField()
     month = models.IntegerField()
-    present_data = JSONField(default=list)
+    present_data = JSONField(default=list,null=True,blank=True)
     absent_data = JSONField(default=list,null=True,blank=True)
     

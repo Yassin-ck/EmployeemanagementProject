@@ -159,31 +159,32 @@ def Hr_departmenting(request,id=0):
     
 
 @unauthenticated_user
-def loginPage(request,id=0):
+def loginPage(request, id=0):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         EmployeeCode = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=EmployeeCode, password=password)
         print(user)
+        print(request.path)
         if user is None:
             try:
                 failed_user = FailedLoginAttempt.objects.get(user__username=EmployeeCode)
                 if failed_user.user.is_active == False and failed_user.is_blocked == False:
-                    messages.error(request,'Your account is blocked')
-                    user = User.objects.get(username = EmployeeCode)
-                    return redirect('blocked_email',id=user.id)
+                    messages.error(request, 'Your account is blocked')
+                    user = User.objects.get(username=EmployeeCode)
+                    return redirect('blocked_email', id=user.id)
                 elif failed_user.is_blocked == True:
-                    messages.error(request,'Wait for the email confirmation')
+                    messages.error(request, 'Wait for the email confirmation')
                 else:
-                    messages.error(request,'Three failed attempt cause Account block')
-            except FailedLoginAttempt.DoesNotExist or FailedLoginAttempt.MultipleObjectsReturned:
-                messages.error(request,'unautharized entry ')
+                    messages.error(request, 'Three failed attempt cause Account block')
+            except (FailedLoginAttempt.DoesNotExist, FailedLoginAttempt.MultipleObjectsReturned):
+                messages.error(request, 'unauthorized entry')
         else:
             if 'unblock_by_login' in request.path:
-                login(request,user)
-                user=User.objects.get(pk=id)
-                return redirect('unblock_user_page',id=user.id)
+                login(request, user)
+                user = User.objects.get(pk=id)
+                return redirect('unblock_user_page', id=user.id)
             elif user.last_login is None and not user.is_superuser:
                 # First login after registration, redirect to reset password
                 return redirect('passwordresetemail', id=user.id)
@@ -191,6 +192,7 @@ def loginPage(request,id=0):
                 # Regular login, redirect to two-factor authentication
                 request.session['pk'] = user.pk
                 return redirect('twoFactorAuthentication')
+
 
         
 
@@ -330,7 +332,7 @@ def TwoFactorAuthentication(request):
 
             except Code.DoesNotExist:
                 messages.error(request, 'Verification code not found')
-            except TwilioRestException as e:
+            except TwilioRestException:
                 messages.error(request, f'Error occurred while verifying the OTP: {e}')
 
     else:

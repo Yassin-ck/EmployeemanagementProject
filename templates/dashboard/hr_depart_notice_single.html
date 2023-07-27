@@ -1,31 +1,101 @@
 {% extends "includes/sidebar.html" %}
 
 {% block contents %}
+<style>
+  .card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .card-img-top {
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .card-text {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .btn-submit {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s;
+  }
+
+  .btn-submit:hover {
+    background-color: #0056b3;
+  }
+
+  /* Font Awesome icons */
+  .fas {
+    margin-right: 8px;
+  }
+
+  /* Media queries for responsive design */
+  @media (max-width: 768px) {
+    .card-img-top {
+      max-height: 150px;
+    }
+  }
+
+  /* Animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 30px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
 <div class="card mb-3">
-    {% if notice.image %}
+  {% if notice.image %}
     <img src="{{ MEDIA_URL }}{{ notice.image.url }}" class="card-img-top" alt="...">
-    {% endif %}
+  {% endif %}
 
-    <div class="card-body">
-        <h5 class="card-title">{{ notice.title }}</h5>
-        <p class="card-text">{{ notice.subject }}</p>
-        <p class="card-text"><small class="text-body-secondary">{{ notice.content }}</small></p>
+  <div class="card-body">
+    <h5 class="card-title">{{ notice.title }}</h5>
+    <p class="card-text">{{ notice.subject }}</p>
+    <p class="card-text"><small class="text-body-secondary">{{ notice.content }}</small></p>
 
-        <div>
-            <form action="{% url 'dashboard_single' notice.id %}" method="POST">
-                {% csrf_token %}
-                <input type="text" name="comment">
-                <input type="submit" value="Submit" class="btn-submit" required>
-            </form>
-            
-            {% for comment in comments %}
-            <div class="d-flex justify-content-between">
-                <p>@{{ comment.user.first_name }}</p>
-                <p>{{ comment.comment }}</p>
-                <p>{{ comment.created_at|timesince }}</p>
-            </div>
-            {% endfor %}
+    <div>
+      <form action="{% url 'dashboard_single' notice.id %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="comment" placeholder="Add a comment" required>
+        <input type="submit" value="Submit" class="btn-submit">
+      </form>
+      
+      {% for comment in comments %}
+        <div class="d-flex justify-content-between">
+          <p>@{{ comment.user.first_name }}</p>
+          <p>{{ comment.comment }}</p>
+          <p>{{ comment.created_at|timesince }}</p>
         </div>
+      {% endfor %}
     </div>
+  </div>
 </div>
 {% endblock contents %}

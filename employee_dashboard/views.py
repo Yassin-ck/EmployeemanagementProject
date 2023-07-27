@@ -299,11 +299,12 @@ def Leave_approval_rejection(request, id):
                 current_date += timedelta(days=1)
         else:
             absent_data = [leave_request.start_date.day]
-
-        attendence = AttendenceTable.objects.get(employee=leave_request.user, year=year, month=month)
+        try:
+            attendence = AttendenceTable.objects.get(employee=leave_request.user, year=year, month=month)
+        except:
+            attendence = AttendenceTable.objects.create(employee=leave_request.user, year=year, month=month)
         if attendence.absent_data:
-            attendence.absent_data += absent_data
-           
+            attendence.absent_data += absent_data           
         else:
             attendence.absent_data = absent_data
         attendence.absent_data = list(set(attendence.absent_data))

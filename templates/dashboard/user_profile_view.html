@@ -1,13 +1,56 @@
 {% extends "includes/sidebar.html" %}
 
 {% block contents %}
-<div class="d-flex flex-column container">
-  <div class="row gap-5">
+<style>
+  .profile-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .profile-card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    margin-right: 10px;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+
+  /* Styling for the anchor tag */
+  .profile-link {
+    color: black;
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  /* Hover styles for the anchor tag */
+  .profile-link:hover {
+    color: black;
+    border-color: black;
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="profile-card-container">
     {% for user in user_profiles %}
-    <div class="container">
-      <h4>{{ user }}</h4>
-      <a href="{% url 'user_profile_single_view' user.id %}" class="btn btn-secondary">Open</a>
-    </div>
+    <a class="profile-link" href="{% url 'user_profile_single_view' user.id %}">
+      <div class="profile-card">
+        <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+        <h4>{{ user }}</h4>
+      </div>
+    </a>
     {% endfor %}
   </div>
 </div>

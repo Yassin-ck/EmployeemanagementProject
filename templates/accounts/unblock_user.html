@@ -1,8 +1,67 @@
 {% extends "includes/sidebar.html" %}
 
 {% block contents %}
-<h3 class="text-warning">Blocked Account</h3>
-{{user}}
-  <a href="{% url 'unblock_blocked_user' id=user.id %}">Unblock User</a>
-  <a href="{% url 'delete_blocked_user' id=user.id %}">Delete User</a>
+<style>
+  .blocked-account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+
+  .blocked-account h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff9800;
+    margin-bottom: 20px;
+  }
+
+  .blocked-account a {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  .blocked-account a:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+
+  /* Font Awesome Icons */
+  .blocked-account a::before {
+    content: "\f023";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 10px;
+  }
+
+  /* Bootstrap media query for responsive design */
+  @media (max-width: 768px) {
+    .blocked-account {
+      width: 90%;
+    }
+  }
+</style>
+
+<div class="container">
+  <div class="blocked-account">
+    <h3 class="text-warning">Blocked Account</h3>
+    {{ user }}
+    <a href="{% url 'unblock_blocked_user' id=user.id %}">Unblock User</a>
+    <a href="{% url 'delete_blocked_user' id=user.id %}">Delete User</a>
+  </div>
+</div>
 {% endblock contents %}

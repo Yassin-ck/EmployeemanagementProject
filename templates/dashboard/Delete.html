@@ -1,24 +1,68 @@
 {% extends "includes/sidebar.html" %}
 {% block contents %}
-  
+
+<style>
+  .container {
+    margin-top: 50px;
+  }
+
+  .text-success {
+    font-size: 24px;
+    font-weight: bold;
+    color: #28a745;
+  }
+
+  .alert-light {
+    padding: 15px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    color: #dc3545;
+  }
+
+  .text-danger {
+    font-weight: bold;
+    color: #dc3545;
+  }
+
+  .btn-dark {
+    background-color: #343a40;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-dark:hover {
+    background-color: #23272b;
+  }
+
+  .btn-dark i {
+    margin-right: 8px;
+  }
+</style>
+
 <div class="container text-center mt-5">
-    <div class="row justifycontent-center">
-        <div class="text-center">
-      
-            <h2 class="text-success">Delete Confirmation</h2>
+  <div class="row justify-content-center">
+    <div class="text-center">
+      <h2 class="text-success">Delete Confirmation</h2>
 
-              
-            {% for verify in messages %}
-            <div class="alert-light text-danger m-4"><strong>{{verify}}</strong></div>
-            {% endfor %}
+      {% for verify in messages %}
+      <div class="alert-light text-danger m-4"><strong>{{verify}}</strong></div>
+      {% endfor %}
 
-            
-            <form method="POST" action="">
-                        {% csrf_token %}
-                <button type="submit" class="btn btn-dark mt-5">Delete</button>
-            </form>
-        </div>
+      <form method="POST" action="">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-dark mt-5">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </form>
     </div>
+  </div>
 </div>
 
 {% endblock contents %}

@@ -1,34 +1,135 @@
+
+
+
+
+
 {% extends "includes/sidebar.html" %}
 
 {% block contents %}
-<div class="container text-center">
-    <div class="row justify-content-space-between">
-        <div class="col-md-6">  <!-- Add a class to specify the column width -->
-            <div class="text-center">
-                <form action="" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form.as_p }}
- <!-- Correct the name of the form object -->
-                        <div>
-                                <input type="submit" value="submit" class="btn btn-primary ">
-                        </div>
-                </form>
-                {% include "includes/messages.html" %}
-                <!-- {% if form.errors %}
-                <div class="alert alert-danger text-danger mt-3" id="message-alerts">{{ form.errors }}</div>
-                {% endif %} -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-OMmO0OPa9KajrDrkYL8f6JnZzBKNEwHnUj8BPlnB+8Jmz3ntSb7hVOy6Uofm4ltT" crossorigin="anonymous">
+
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+    }
+
+    .form-container {
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        padding: 20px; /* Reduce padding to reduce height */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 600px;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .form-group {
+        margin-bottom: 10px; /* Reduce margin to reduce height */
+    }
+
+    .form-label {
+        font-size: 16px; /* Reduce font size to reduce height */
+        font-weight: bold;
+        margin-bottom: 3px; /* Reduce margin to reduce height */
+    }
+
+    .form-control {
+        width: 100%;
+        height: 30px; /* Reduce height to reduce height */
+        padding: 5px; /* Reduce padding to reduce height */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px; /* Reduce font size to reduce height */
+        transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+        border-color: #3f51b5;
+        box-shadow: 0 0 3px rgba(63, 81, 181, 0.5);
+    }
+
+    .btn-primary {
+        background-color: #3f51b5;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 16px; /* Reduce padding to reduce height */
+        font-size: 14px; /* Reduce font size to reduce height */
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.2s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary:hover {
+        background-color: #1e88e5;
+    }
+
+    .btn-primary:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container form {
+        display: grid;
+        gap: 10px; /* Reduce gap to reduce height */
+    }
+
+    .form-container form label {
+        display: block;
+    }
+
+    .form-container form input[type="submit"] {
+        justify-self: center;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 30px, 0);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .form-container {
+            width: 100%;
+            padding: 15px; /* Reduce padding to reduce height */
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="form-container">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label" for="id_title">Title</label>
+                {{ form.title }}
             </div>
-        </div>
+            <div class="form-group">
+                <label class="form-label" for="id_subject">Subject</label>
+                {{ form.subject }}
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="id_content">Content</label>
+                {{ form.content }}
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="id_image">Image</label>
+                {{ form.image }}
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Submit</button>
+            </div>
+        </form>
+        {% include "includes/messages.html" %}
     </div>
 </div>
 {% endblock contents %}
-<!-- <script>
-        setTimeout(function() {
-            var messageAlerts = document.querySelectorAll('#message-alerts');
-            if (messageAlerts) {
-                messageAlerts.forEach(function(alert) {
-                    alert.style.display = 'none';
-                });
-            }
-        }, 5000);
-    </script> -->

@@ -1,8 +1,99 @@
 {% extends "includes/sidebar.html" %}
 
 {% block contents %}
-<form action="" method="POST" enctype="multipart/form-data" novalidate>
+<style>
+  .container {
+    margin-top: 50px;
+    max-width: 500px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-size: 16px;
+    color: #333;
+  }
+
+  input[type="text"],
+  input[type="file"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"]:focus,
+  input[type="file"]:focus,
+  textarea:focus {
+    border-color: #007bff;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn:hover {
+    background-color: #0056b3;
+  }
+
+  .btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .fas {
+    margin-right: 8px;
+  }
+</style>
+
+<div class="container">
+  <form action="" method="POST" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
-   {{form.as_p}}
-<button type="submit" class="btn">submit</button>
+    <div class="form-group">
+      <label for="{{ form.title.id_for_label }}"><i class="fas fa-heading"></i> Title</label>
+      {{ form.title }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.subject.id_for_label }}"><i class="fas fa-tags"></i> Subject</label>
+      {{ form.subject }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.content.id_for_label }}"><i class="fas fa-file-alt"></i> Content</label>
+      {{ form.content }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.image.id_for_label }}"><i class="fas fa-image"></i> Image</label>
+      {{ form.image }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.assigned_to.id_for_label }}"><i class="fas fa-user"></i> Assigned To</label>
+      {{ form.assigned_to }}
+    </div>
+    <button type="submit" class="btn"><i class="fas fa-check"></i> Submit</button>
+  </form>
+</div>
+
+<!-- Add Font Awesome CSS link to your base template -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-dG5y4zrXENdKi2S1LR/wTlt2In6NchIWjSEykkwzTgqYZSwbGI3A4RsAwg0jdo5wo/9ACB5kGecg3vLMebE7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 {% endblock contents %}

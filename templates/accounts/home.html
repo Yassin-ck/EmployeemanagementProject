@@ -1,33 +1,114 @@
 {% extends "includes/sidebar.html" %}
 {% block contents %}
 <style>
-  .contanier{
-    display: grid;
-    grid-template-columns: 3fr 1fr;
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Add position relative to the container */
+  }
+
+  /* Styling for the content section */
+  .content-section {
+    margin: 30px;
+  }
+
+  .content-section h1 {
+    color: #3f51b5;
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+
+  .content-section h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .content-section h5 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  /* Styling for the buttons */
+  .action-buttons {
+    display: flex;
+    justify-content: center; /* Align the buttons to the center horizontally */
+    margin-top: 20px;
+  }
+
+  .action-buttons button {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-dark {
+    background-color: #333;
+    color: #fff;
+  }
+
+  .btn-success {
+    background-color: #2ecc71;
+    color: #fff;
+  }
+
+  /* Hover and active styles for buttons */
+  .action-buttons button:hover {
+    background-color: #1e8449;
+  }
+
+  .action-buttons button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Style for the logout button */
+  .btn-logout {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s;
+  }
+
+  .btn-logout:hover {
+    background-color: #1e8449;
   }
 </style>
-<div class="container"> 
-
-  <div class="container text-center">
+<div class="container">
+  <button onclick="window.location.href='{% url 'logout' %}'" class="btn-logout">
+    <i class="fas fa-sign-out-alt"></i>
+  </button>
+  <div class="content-section">
     <div class="m-5">
-
-        <h1 class="text-info">Home</h1>
-       
-      <h3>Welcome {{user.first_name}} {{user.last_name}}</h3>
-      <h3>Role : {{user.role}}</h3>
-      <h5>Department : {{user.department}}</h5>
+      <center>
+      <h2>Welcome {{ user.first_name }} {{ user.last_name }}</h2>
+      <h3>{{ user.role }}</h3>
+      <h5>{{ user.department }}</h5>
+      </center>
     </div>
-    <a href="{% url 'logout' %}"  class="btn btn-dark">Logout</a>
-    {% if user.is_hr %}
-    <a href="{% url 'register' %}"  class="btn btn-success ">Add User</a>
-    
-    {% endif %}
-    
+    <div class="action-buttons">
+      {% if user.is_hr %}
+      <button onclick="window.location.href='{% url 'register' %}'" class="btn btn-success">
+        <i class="fas fa-user-plus"></i> Add User
+      </button>
+      {% endif %}
+    </div>
   </div>
-    <div>
-      <div>
-
-      </div>
-    </div>
+  <div>
+    <!-- Add any additional content here -->
+  </div>
 </div>
 {% endblock contents %}

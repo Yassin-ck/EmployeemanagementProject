@@ -23,31 +23,64 @@
         {{ form.comment }}
         <label for="">Status</label>
         {{ form.status }}
-
-    
         <label for="">Task No.</label>
-        {{ form.department_notice_board}}
-
-       
-
-
-
-        </div>
+        {{ form.department_notice_board }}
+    </div>
     <div>
-
-
         <input type="submit" value="Submit" class="btn">
     </div>
-    </form>
-
-
+</form>
 
 {% endif %}
-    {% if 'today_task_edit' not in request.path %}
-<a href="{% url 'today_task_single_view' request.user.id %}" >Completed</a>
+
+{% if 'today_task_edit' not in request.path %}
+    <a href="{% url 'today_task_single_view' request.user.id %}" class="btn"><i class="fas fa-check"></i> Completed</a>
 {% endif %}
 
+<style>
+    /* Add your CSS styles here */
+    .btn {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 16px;
+        font-size: 16px;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.2s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* Add your media queries here */
+    @media (max-width: 768px) {
+        /* Add styles for smaller screens */
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 30px, 0);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    /* Add animation to specific elements */
+    .btn, form {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* Add Font Awesome CSS styles */
+    /* You have already included Font Awesome in your base template, so no need to add it here */
+</style>
 
 {% include "includes/messages.html" %}
 {% endblock contents %}

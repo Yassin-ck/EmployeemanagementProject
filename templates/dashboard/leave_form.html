@@ -1,29 +1,128 @@
 {% extends "includes/sidebar.html" %}
+
 {% block contents %}
-<div class="container d-flex justify-content">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-OMmO0OPa9KajrDrkYL8f6JnZzBKNEwHnUj8BPlnB+8Jmz3ntSb7hVOy6Uofm4ltT" crossorigin="anonymous">
 
-    <div>
-        <form action="" method="POST">
-   {% csrf_token %}
-       {{form.as_p}}
-       <button type="submit" class="btn" style="background-color: bisque;">submit</button>
-    </form>
+<div class="container d-flex justify-content-center mt-3">
+    <div class="card p-3" style="width: 400px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <div class="card-body">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.start_date.id_for_label }}">Start Date</label>
+                    {{ form.start_date }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.end_date.id_for_label }}">End Date</label>
+                    {{ form.end_date }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.reason.id_for_label }}">Reason</label>
+                    {{ form.reason }}
+                </div>
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn-custom"><i class="fas fa-check"></i> Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-<div>
-    {% if 'leave_form_edit' not in request.path and request.user.is_hr %}
-  
-    <a href="{% url 'leave_personal_view' id=user.id %}" class="btn btn-warning">Leaves</a>
+{% if 'leave_form_edit' not in request.path and request.user.is_hr %}
+<div class="container d-flex justify-content-center mt-3">
+    <a href="{% url 'leave_personal_view' id=user.id %}" class="btn-custom btn-warning"><i class="fas fa-calendar-alt"></i> Leaves</a>
+</div>
 {% endif %}
-    
-</div>
-</div>
- <style>
 
-    .contaniner{
-        display: grid;
-        grid-template-columns: 1fr 3fr;
+<style>
+    .card {
+        border: none;
     }
- </style>
- {% include "includes/messages.html" %}
+
+    .card-body {
+        background-color: #f9f9f9;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 16px;
+        color: #333;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    textarea:focus {
+        border-color: #007bff;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .btn-custom {
+        background-color: #2ecc71;
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.2s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-custom:hover {
+        background-color: #27ae60;
+    }
+
+    .btn-custom:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-custom.btn-warning {
+        background-color: #f39c12;
+    }
+
+    /* Bootstrap media query for responsive design */
+    @media (max-width: 768px) {
+        .card {
+            width: 90%;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 30px, 0);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    .mt-3 {
+        animation: fadeInUp 0.6s ease-out;
+    }
+</style>
+{% include "includes/messages.html" %}
 {% endblock contents %}

@@ -1,6 +1,8 @@
 {% extends "includes/sidebar.html" %}
 
 {% block contents %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-OMmO0OPa9KajrDrkYL8f6JnZzBKNEwHnUj8BPlnB+8Jmz3ntSb7hVOy6Uofm4ltT" crossorigin="anonymous">
+
 <style>
   .container {
     margin-top: 50px;
@@ -9,29 +11,29 @@
   h2 {
     text-align: center;
     margin-bottom: 30px;
+    font-family: "Arial", sans-serif;
+    color: #333;
   }
 
   .form-group label {
     font-weight: bold;
+    font-family: "Arial", sans-serif;
+    color: #555;
+    display: flex;
+    align-items: center;
   }
 
   .form-group input[type="text"],
   .form-group input[type="email"],
-  .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-
+  .form-group select,
   .form-group textarea {
     width: 100%;
-    height: 100px;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 14px;
+    font-family: "Arial", sans-serif;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
 
   .form-group input[type="file"] {
@@ -51,14 +53,52 @@
     font-size: 16px;
     text-align: center;
     cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    font-family: "Arial", sans-serif;
   }
 
   .btn-submit:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+
+  /* Input hover animation */
+  .form-group input[type="text"]:hover,
+  .form-group input[type="email"]:hover,
+  .form-group select:hover,
+  .form-group textarea:hover {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  }
+
+  /* Bootstrap media query for responsive design */
+  @media (max-width: 768px) {
+    .container {
+      width: 90%;
+    }
+  }
+
+  /* Gap between income from top and bottom */
+  .form-group.income {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  /* Font Awesome Icons */
+  .form-group label::after {
+    content: "\f007";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-left: 5px;
+    color: #555;
+  }
+
+  .btn-submit i {
+    margin-right: 5px;
   }
 </style>
 
-<div class="container">
+<div class="container mt-5">
   <h2>User Profile</h2>
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
@@ -88,13 +128,13 @@
           <label for="">Contact Number</label>
           {{ userform.mobile }}
         </div>
-        <div class="form-group">
+        <div class="form-group income">
           <label for="">Income</label>
           {{ profileform.income }}
         </div>
         <div class="form-group">
           <label for="">Address 1</label>
-          {{ profileform.address1}}
+          {{ profileform.address1 }}
         </div>
       </div>
       <div class="col-md-6">
@@ -119,8 +159,8 @@
           {{ profileform.country }}
         </div>
         <div class="form-group">
-          <label for="">Alternatice Number</label>
-          {{ profileform.alternative_contact_number}}
+          <label for="">Alternative Number</label>
+          {{ profileform.alternative_contact_number }}
         </div>
         <div class="form-group">
           <label for="">Image</label>
@@ -132,7 +172,7 @@
         </div>
       </div>
     </div>
-    <button type="submit" class="btn-submit">Submit</button>
+    <button type="submit" class="btn-submit"><i class="fas fa-check"></i> Submit</button>
   </form>
 </div>
 {% endblock contents %}

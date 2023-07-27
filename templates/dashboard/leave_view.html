@@ -1,45 +1,156 @@
 {% extends "includes/sidebar.html" %}
 
 {% block contents %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-OMmO0OPa9KajrDrkYL8f6JnZzBKNEwHnUj8BPlnB+8Jmz3ntSb7hVOy6Uofm4ltT" crossorigin="anonymous">
+
+<style>
+  .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .card-text {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  .card-text strong {
+    font-weight: bold;
+  }
+
+  .text-body-secondary {
+    font-size: 12px;
+    color: #888;
+  }
+
+  .btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+  }
+
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+
+  .btn-dark {
+    background-color: #343a40;
+    color: #fff;
+  }
+
+  .btn-dark:hover {
+    background-color: #1d2124;
+  }
+
+  .btn-warning {
+    background-color: #ffc107;
+    color: #000;
+  }
+
+  .btn-warning:hover {
+    background-color: #ffb700;
+  }
+
+  /* Animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .card {
+    animation: fadeInUp 0.5s ease-out;
+  }
+
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .card {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .card-title {
+      font-size: 20px;
+    }
+    .card-text {
+      font-size: 14px;
+    }
+    .btn {
+      font-size: 12px;
+    }
+  }
+</style>
 
 {% for leave in leaves %}
 {% if request.user == leave.user and 'leave_view' not in request.path %} 
-<div class="card mb-3 fixed {% if leave.status == 'Pending' %}bg-warning{% elif leave.status == 'Approved' %}bg-success{% else %}bg-danger{% endif %}">
+<div class="card {% if leave.status == 'Pending' %}bg-warning{% elif leave.status == 'Approved' %}bg-success{% else %}bg-danger{% endif %}">
   {% else %}
- <div class="card mb-3 fixed">
+ <div class="card">
 {% endif %}
   <div class="row g-0">
     <div class="col-md-4">
     </div>
     <div class="col-md-8">
       <div class="card-body">
-        <h5 class="carDSd-title">EMP-CODE: {{ leave.user.username }}</h5>
+        <h5 class="card-title"> {{ leave.user.username }}</h5>
         {% if not leave.end_date %}
         
-        <p class="card-text">Leave on : {{ leave.start_date }}</p>
+        <p class="card-text">Leave on: {{ leave.start_date }}</p>
         {% else %}
-        <p class="card-text">from: {{ leave.start_date }}</p>
+        <p class="card-text">From: {{ leave.start_date }}</p>
         {% endif %}
         {% if leave.end_date %}      
-        <p class="card-text">to: {{ leave.end_date }}</p>
+        <p class="card-text">To: {{ leave.end_date }}</p>
         {% endif %}
         <p class="card-text">Reason: {{ leave.reason }}</p>
-        <p class="carDSd-title"><strong>{{ leave.user.first_name }} {{ leave.user.last_name }}</strong></p>
-        <small class="text-body-secondary">{{ leave.created_at|timesince }} ago</small>
         {% if request.user == leave.user %}
           
         <p class="card-text">
-          Request <strong>{{ leave.status }}</strong>
+         <strong>{{ leave.status }} your request</strong>
         </p>
         
         {% endif %}
+        {% if leave.updated_at %}
+        
+        <small class="text-body-secondary">{{ leave.updated_at|timesince }} ago</small>
+        {% else %}
+        <small class="text-body-secondary">{{ leave.created_at|timesince }} ago</small>
+        {% endif %}
       </div>
       {% if request.user.is_hr and 'leave_view' in request.path %}
-        <a href="{% url 'leave_approval' leave.id %}" class="btn btn-secondary">Approve</a>
-        <a href="{% url 'leave_rejection' leave.id %}" class="btn btn-dark">Reject</a>
+        <a href="{% url 'leave_approval' leave.id %}" class="btn btn-secondary"><i class="fas fa-check"></i> Approve</a>
+        <a href="{% url 'leave_rejection' leave.id %}" class="btn btn-dark"><i class="fas fa-times"></i> Reject</a>
       {% elif leave.status == 'Pending' %}
-        <a href="{% url 'leave_form_edit' leave.id %}" class="btn btn-secondary">Edit</a>
-        <a href="{% url 'leave_form_delete' leave.id %}" class="btn btn-dark">Delete</a>
+        <a href="{% url 'leave_form_edit' leave.id %}" class="btn btn-secondary"><i class="fas fa-pencil-alt"></i> Edit</a>
+        <a href="{% url 'leave_form_delete' leave.id %}" class="btn btn-dark"><i class="fas fa-trash"></i> Delete</a>
       {% endif %}
     </div>
   </div>
@@ -47,9 +158,9 @@
 {% endfor %}
 
 {% if request.user.is_authenticated and request.user.is_hr and 'leave_personal_view' not in request.path %}
-<a href="{% url 'leave_form' %}" class="btn btn-warning">Leave Apply</a>
+<a href="{% url 'leave_form' %}" class="btn btn-warning"><i class="fas fa-file-alt"></i> Leave Apply</a>
 {% elif not request.user.is_hr and request.user.is_authenticated %}
-<a href="{% url 'leave_form' %}" class="btn btn-warning">Leave Apply</a>
+<a href="{% url 'leave_form' %}" class="btn btn-warning"><i class="fas fa-file-alt"></i> Leave Apply</a>
 {% endif %}
 {% include "includes/messages.html" %}
 

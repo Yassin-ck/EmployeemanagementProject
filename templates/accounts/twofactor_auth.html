@@ -1,17 +1,92 @@
 {% extends "base.html" %}
-{% block content  %}
+{% load static %}
+
+{% block content %}
+<style>
+  .container {
+    margin-top: 50px;
+  }
+
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    font-family: "Arial", sans-serif;
+  }
+
+  .form-group label {
+    font-weight: bold;
+    font-family: "Arial", sans-serif;
+    color: #555;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: "Arial", sans-serif;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .form-group input[type="text"]:focus,
+  .form-group input[type="password"]:focus {
+    border-color: #3f51b5;
+    box-shadow: 0 0 8px rgba(63, 81, 181, 0.5);
+  }
+
+  .btn-primary {
+    display: block;
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    font-family: "Arial", sans-serif;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+
+  /* Font Awesome Icons */
+  .btn-primary::before {
+    content: "\f090";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 10px;
+  }
+
+  /* Bootstrap media query for responsive design */
+  @media (max-width: 768px) {
+    form {
+      width: 90%;
+    }
+  }
+</style>
+
 <div class="container text-center">
-<div class="row justify-content-center">
+  <div class="row justify-content-center">
     <div class="text-center">
-        <form action="{% url 'twoFactorAuthentication' %}" method="POST">
-            {% csrf_token %}
-            {{form.as_p}}
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-{% include "includes/messages.html" %}
+      <form action="{% url 'twoFactorAuthentication' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      {% include "includes/messages.html" %}
     </div>
+  </div>
 </div>
-
-</div>
-
 {% endblock content %}
