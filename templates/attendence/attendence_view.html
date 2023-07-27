@@ -1,0 +1,41 @@
+{% extends "includes/sidebar.html" %}
+{% block contents %}
+<center>
+
+  <h3 style="text-decoration: underline;">{{user.department}} Department</h3><br>
+  <h4>{{month_name}} {{year}}</h4><hr>
+ 
+  
+  <div class="table">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+                <th>Employee</th>
+                {% for day in days %}
+                    <th>{{ day }}</th>
+                {% endfor %}
+              </tr>
+        </thead>
+        <tbody>
+            {% for attendance in attendence_data %} 
+            <tr>
+              <td>{{ attendance.employee }}</td>
+                    {% for day in days %}
+                        {% if day in attendance.present_data %}
+                            <td class="text-primary"><small>P</small></td>
+                        {% elif day in attendance.absent_data %}
+                            <td class="text-danger"><small>A</small></td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</center>
+<a class="btn btn-dark" href="{% url 'attendence_table' year=year month=month id=id %}"> My attendance</a>
+
+{% endblock contents %}

@@ -1,0 +1,64 @@
+{% extends "includes/sidebar.html" %}
+
+{% block contents %}
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    table {
+        border-collapse: collapse;
+        width: 50%;
+        margin: 20px auto;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+    .text-warning {
+        color: orange;  /* You can change the highlight color as desired */
+    }
+</style>
+<center>
+    <h1>Attendance</h1>
+    <h2>{{ user }}</h2>
+    <h3>{{ year }}</h3>
+    <h4>{{ month }}</h4>
+    <table>
+        <tr>
+            {% for weekday in weekdays %}
+            <th>{{ weekday }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in rows %}
+        <tr>    
+            {% for day in row %}
+            <td>
+                {% if day %}
+                    {% if day in present %}
+                        <a class="text-primary" href="{% url 'attendence_table_marking' number=day id=request.user.id %}">
+                            <strong>{{ day }}</strong>
+                        </a>
+                    {% elif day in absent %}
+                        <a class="text-danger" href="{% url 'attendence_table_marking' number=day id=request.user.id %}">
+                            <strong>{{ day }}</strong>
+                        </a>
+                    {% elif day in weekends %}
+                        <a class="text-danger" href="{% url 'attendence_table_marking' number=day id=request.user.id %}">
+                            <strong>{{ day }}</strong>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'attendence_table_marking' number=day id=request.user.id %}">
+                            <strong>{{ day }}</strong>
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+
+{% endblock contents %}

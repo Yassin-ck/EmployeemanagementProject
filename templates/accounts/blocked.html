@@ -1,0 +1,15 @@
+
+{% autoescape off %}
+ Hello HR Team
+    The following user account has been blocked:
+    User: {{ user.username }}
+    Email: {{ user.email }}
+    click the link below to see the blocked user details
+    http://{{ domain }}{% url 'unblock'  uid=uid token=token %}
+    Thank you,
+    Your Company
+
+{% endautoescape %}
+
+
+

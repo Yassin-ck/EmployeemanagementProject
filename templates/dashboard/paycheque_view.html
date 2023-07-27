@@ -1,0 +1,29 @@
+{% extends "includes/sidebar.html" %}
+
+{% block contents %}
+<center>
+
+  <div class="d-flex flex-column container">
+    <div class="row gap-5">
+      <div class="container">
+        
+        <h4>Pay Slip</h4>
+
+        {{month_name}} {{year}}
+        <hr>
+      <p><strong>Employee-Code : </strong> {{ paycheque_slip.employee }} </p>
+      <p><strong>Full Name : </strong> {{ paycheque_slip.employee.first_name }} {{ paycheque_slip.employee.last_name }}</p>
+      <p><strong>Role : </strong> {{ paycheque_slip.employee.role }} </p>
+      <p><strong>Gross Salary : </strong> {{ paycheque_slip.gross_month_salary }}</p>
+      <p><strong>Department : </strong> {{ paycheque_slip.employee.department }} </p>
+      
+      <p><strong>Incentives : </strong> {{ paycheque_slip.incentives }}</p>
+      <p><strong>Deductions : </strong> {{ paycheque_slip.deductions }}</p>
+      <p><strong>Total month Salary  : </strong> {{ paycheque_slip.month_salary}}</p>
+      
+    </div>
+  </div>
+</div>
+<a class="btn btn-secondary border bordeeless" href="{% url 'paycheque_pdf' id=user.id  %}">Download <i class="fa-regular fa-circle-down"></i>  </a>
+</center>
+{% endblock contents %}

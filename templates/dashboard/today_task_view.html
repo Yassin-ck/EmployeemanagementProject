@@ -1,0 +1,34 @@
+{% extends "includes/sidebar.html" %}
+
+{% block contents %}
+
+
+{% if today_task %}
+  {% for task in today_task %}
+    <div class="{% if task.status == 'Pending' %}bg-warning{% else %}bg-success{% endif %}">
+      <p>Task id: {{ task.department_notice_board.id }}</p>
+      <p>Task Subject: {{ task.department_notice_board.subject }}</p>
+      <p>Task Subject: {{ task.department_notice_board.assigned_to }}</p>
+      <p>Task Comment: {{ task.comment }}</p>
+      <p>Status: {{ task.status }}</p>
+    </div>
+    
+{% if request.user.is_worker %}
+
+    <a href="{% url 'today_task_edit' task.id %}">Edit</a>
+ <a href="{% url 'today_task_delete' task.id %}">delete</a>
+{% endif %}
+  {% endfor %}
+{% else %}
+  <p>No tasks found.</p>
+{% endif %}
+
+
+    
+
+
+
+
+{% include "includes/messages.html" %}
+{% endblock contents %}
+x`

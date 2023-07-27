@@ -1,0 +1,14 @@
+{% extends "includes/sidebar.html" %}
+
+{% block contents %}
+<div class="d-flex flex-column container">
+  <div class="row gap-5">
+    {% for user in user_profiles %}
+    <div class="container">
+      <h4>{{ user }}</h4>
+      <a href="{% url 'user_profile_single_view' user.id %}" class="btn btn-secondary">Open</a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock contents %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+  
+<div class="container text-center mt-5">
+    <div class="row justifycontent-center">
+        <div class="text-center">
+              {% if 'paycheque_form' in request.path  %}
+                <h2 class="text-success">Pay Cheque Successfull</h2>
+                {% elif  'blocked_email' in request.path  %}
+                <h2 class="text-success">Account Blocked</h2>
+                {% else %}
+                <h2 class="text-success">Mail Verification</h2>
+              {% endif %}
+            {% for verify in messages %}
+              <div class="alert-light text-success m-4"><strong>{{verify}}</strong></div>
+            {% endfor %}
+            {% if 'emailpassid/' in request.path %}
+            <a href="{% url 'register' %}" class="btn mt-5 btn-success">Add New User</a>
+            <a href="{% url 'home' %}" class="btn mt-5 btn-info">Home</a>
+            {% elif 'paycheque_form'  in request.path %}
+            <a href="{% url 'paycheque_form' %}" class="btn  mt-5">Paycheque</a>
+            {% elif  'paycheque_edit' in request.path %}
+            <a href="{% url 'paycheque_form' %}" class="btn  mt-5">Paycheque</a>
+             {% elif  'blocked_email' in request.path  %}
+            <a href="{% url 'send_blocked_email' id=user.id %}" class="btn  mt-5">send email</a>
+
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

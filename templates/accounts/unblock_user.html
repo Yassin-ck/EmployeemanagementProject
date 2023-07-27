@@ -1,0 +1,8 @@
+{% extends "includes/sidebar.html" %}
+
+{% block contents %}
+<h3 class="text-warning">Blocked Account</h3>
+{{user}}
+  <a href="{% url 'unblock_blocked_user' id=user.id %}">Unblock User</a>
+  <a href="{% url 'delete_blocked_user' id=user.id %}">Delete User</a>
+{% endblock contents %}

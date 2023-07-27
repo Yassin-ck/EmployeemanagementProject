@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content  %}
+<div class="container text-center">
+<div class="row justify-content-center">
+    <div class="text-center">
+        <form action="{% url 'twoFactorAuthentication' %}" method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+{% include "includes/messages.html" %}
+    </div>
+</div>
+
+</div>
+
+{% endblock content %}

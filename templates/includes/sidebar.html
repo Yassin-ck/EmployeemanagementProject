@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Side Bar Example</title>
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row col-md-12">
+            <div class="col-md-2 d-flex justify-content-between">
+                <div class="sidebar">
+                    <a href="{% url 'home' %}">Home</a>
+                    <a href="{% url 'user_profile_single_view' id=request.user.userprofile.id %}">My Account</a>
+                    <a href="{% url 'dashboard' %}">Notice Board</a>
+                    <a href="{% url 'department_notice_view' %}">DepartmentNotice</a>
+                    {% if request.user.is_authenticated and request.user.is_hr %}
+                    
+                    <a href="{% url 'leave_view' %}">Leave Requests</a>
+                    {% else %}
+                    <a href="{% url 'leave_personal_view' id=user.id %}">Leave Form</a>
+                    {% endif %}
+                    {% if  request.user.is_manager %}
+                    <a href="{% url 'today_task_view' %}">Today Tasks</a>
+                    {% elif request.user.is_worker %}
+                  <a href="{% url 'today_task_personal_form' id=user.id  %}">Today Tasks</a>
+                    {% endif %}
+                    
+                   
+                    <a href="{% url   'paycheque_view' id=user.id %}">View Paycheques</a>
+
+                
+                    {% if request.user.is_authenticated and request.user.is_hr %}                
+                    <a href="{% url 'user_profile_view'  %}">User Profile</a>
+                    {% endif %}
+                  <a href="{% url 'attendence_url' %}">Attendance</a>
+                   
+                </div>
+            </div>
+            <div class="col-md-7  " style="height: 100vh;">
+                {% block contents %}
+                  
+                {% endblock contents %}
+                
+            </div>
+             
+            
+        </div>
+    </div>
+    <style>
+    .sidepanel  {
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      height: auto;
+      top: 0;
+      right: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+      padding-bottom: 40px;
+      border-radius:10px;
+    }
+    
+    .sidepanel a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+    
+    .sidepanel a:hover {
+      color: #f1f1f1;
+    }
+    
+    .sidepanel .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+    }
+    
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      padding: 10px 15px;
+      border: none;
+    }
+    
+    </style>
+    
+   
+
+
+
+ 
+
+   
+</body>
+</html>
+
+{% endblock content %}

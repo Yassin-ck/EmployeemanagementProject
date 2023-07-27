@@ -1,0 +1,12 @@
+{% extends "includes/sidebar.html" %}
+
+{% block contents %}
+{% if 'unblock_user_confirmed' in request.path %}
+<h3>Account Unblocked</h3>
+  {% else %}
+  <h3>Account Deleted</h3>
+{% endif %}
+
+<a href="{% url 'home' %}">home</a>
+{% include "includes/messages.html" %}
+{% endblock contents %}

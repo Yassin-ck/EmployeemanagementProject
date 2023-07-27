@@ -1,0 +1,13 @@
+
+{% autoescape off %}
+ Hello {{user.first_name}} {{user.last_name}}
+    Your account has been unblocked:
+    click the link below to reset the password
+    http://{{ domain }}{% url 'unblocked'  uidb64=uid token=token %}
+    Thank you,
+    Your Company
+
+{% endautoescape %}
+
+
+
