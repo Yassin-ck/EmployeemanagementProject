@@ -32,12 +32,17 @@
                     <a href="{% url 'user_profile_view'  %}">User Profile</a>
                     {% endif %}
                     <a href="{% url 'attendence_url' %}">Attendance</a>
+
+                    <!-- Small toggle button -->
+                    <div class="small-toggle-button" id="toggleButton" onclick="toggleSidebar()">
+                        <i class="fas fa-times"></i>
+                    </div>
                 </div>
                 <div class="toggle-button" onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </div>
             </div>
-            <div class="col-md-7" style="height: 100vh;">
+            <div class="col-md-7 main-content" style="height: 100vh;">
                 {% block contents %}
                 {% endblock contents %}
             </div>
@@ -75,6 +80,29 @@
             color: #333;
         }
 
+        /* Styles for the small toggle button */
+        .small-toggle-button {
+            display: none; /* Initially hidden */
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .small-toggle-button i {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Add styles for the main content area */
+        .main-content {
+            padding-left: 20px; /* Space to account for the width of the open sidebar */
+        }
+
         /* Media Query for Responsive Design */
         @media (max-width: 768px) {
             .sidebar {
@@ -95,10 +123,34 @@
                 cursor: pointer;
                 padding: 10px;
             }
+
+            /* Show the small toggle button when the sidebar is open */
+            .sidebar.open {
+                width: 250px;
+            }
+
+            .sidebar.open .small-toggle-button {
+                display: block;
+            }
         }
 
        
     </style>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            var toggleButton = document.getElementById("toggleButton");
+
+            if (sidebar.style.width === "250px") {
+                sidebar.style.width = "0";
+                sidebar.classList.remove("open"); // Remove the "open" class when closing
+            } else {
+                sidebar.style.width = "250px";
+                sidebar.classList.add("open"); // Add the "open" class when opening
+            }
+        }
+    </script>
 </body>
 </html>
 

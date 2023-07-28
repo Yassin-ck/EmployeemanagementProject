@@ -45,10 +45,8 @@ def Attendence_table(request, year, month, *args, **kwargs):
     rows = [days[i * 7 : (i + 1) * 7] for i in range(num_rows)]
     weekends = []
     for row in rows:
-        print(row)
         for row_num in row:
             if row_num :
-                print(row_num)
                 date_obj = datetime.date(year,month,int(row_num))
                 if date_obj.strftime('%A') in ['Saturday','Sunday']:
                     weekends.append(row_num)
@@ -138,9 +136,7 @@ def Attendence_hr_view(request,year,month,id):
     month_days = calendar.monthrange(year, int(month))[1]
     
     month_name = calendar.month_name[month]
-    print(month_days)
     days = [day for day in range(1,month_days+1)]
-    print(days)
     user = User.objects.get(pk=id)
     if user.is_frontend:
         attendence_data = AttendenceTable.objects.filter(employee__is_frontend=True,year=year,month=month)
