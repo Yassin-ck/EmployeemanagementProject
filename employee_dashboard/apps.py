@@ -5,5 +5,4 @@ class DashboardConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'employee_dashboard'
 
-    def ready(self):
-        import employee_dashboard.signals
+  

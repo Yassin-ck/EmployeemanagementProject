@@ -6,6 +6,9 @@ from django.shortcuts import HttpResponse
 from django.core.files.storage import default_storage
 from django.utils.timezone import now
 # Create your models here.
+
+
+#notice board model 
 class Notice_board(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     title = models.CharField(max_length=150)
@@ -30,14 +33,14 @@ class Notice_board(models.Model):
                 img.save(self.image.path)
         else:
             super().save(*args, **kwargs)
-
-    
-    
+  
     
     def __str__(self):
         return self.title
 
 
+
+#department model
 class Department_notice(models.Model):
     title = models.CharField(max_length=150)
     subject = models.CharField(max_length=200)
@@ -67,7 +70,7 @@ class Department_notice(models.Model):
 
 
             
-            
+#leave model to apply for leave            
 class LeaveApply(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
@@ -96,7 +99,7 @@ class LeaveApply(models.Model):
     
    
 
-
+#daily task model for workers and to manager
 class TodayTasks(models.Model):
     STATUS_CHOICES = [
         ('Completed', 'Completed'),
@@ -122,7 +125,7 @@ class TodayTasks(models.Model):
 
 
 
-
+#to update teh user details 
 class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     income = models.FloatField(null=True)
@@ -151,33 +154,10 @@ class UserProfile(models.Model):
                 output_size = (85,85)
                 img.thumbnail(output_size)
                 img.save(self.profile_picture.path)
-        
-    # def save(self, *args, **kwargs):
-    #     if self.pk and self.profile_picture:
-    #         old_obj = UserProfile.objects.get(pk=self.pk)
-    #         if self.profile_picture != old_obj.profile_picture:
-    #             # Delete the old profile picture
-    #             old_profile_picture = old_obj.profile_picture
-    #             if default_storage.exists(old_profile_picture.name):
-    #                 default_storage.delete(old_profile_picture.name)
 
-    #     super().save(*args, **kwargs)
-    
-    # def save(self,*args,**kwargs):
-    #     super().save(*args,**kwargs)
-    #     if self.profile_picture:
-    #         img = Image.open(self.profile_picture.path)
-            
-    #         if img.height > 85 or img.width > 85:
-    #             output_size = (85,85)
-    #             img.thumbnail(output_size)
-    #             img.save(self.profile_picture.path)
-    #     else:
-    #         self.profile_picture.save()
-                
-             
     
 
+#for paycheque
 class Paycheque(models.Model):
     employee = models.ForeignKey(
         User,
@@ -201,7 +181,7 @@ class Paycheque(models.Model):
         ordering = ['-updated_at','-created_at']
 
    
-    # def __str__(self):
-    #     return self.employee.username
+    def __str__(self):
+        return self.employee.username
    
             

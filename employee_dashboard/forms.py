@@ -6,26 +6,23 @@ import re
 from django.urls import re_path 
 from django.db.models import Q
 
+#changing dateinput
 class DateInput(forms.DateInput):
     input_type = "date"
 
 
+#Form for workers to let them know there dailytasks to the manager
 class TodayTaskForm(forms.ModelForm):
     status = forms.CheckboxInput()
-    # department_notice_board = forms.ChoiceField(required=False)
     class Meta:
         model = TodayTasks
         fields = ('comment','status','department_notice_board')
 
     def __init__(self, *args,user=None,user_edit=None,**kwargs):
-        # readonly_department_notice = kwargs.pop('readonly_department_notice', False)
         super(TodayTaskForm,self).__init__(*args, **kwargs)
-        # self.fields['department_notice_board'].required = False
         if user:
-            # Get the ids of Department_notice objects that have a corresponding TodayTasks instance.
             assigned_task_ids = TodayTasks.objects.filter(department_notice_board__assigned_to=user).values_list('department_notice_board_id', flat=True)
 
-            # Filter the Department_notice queryset to exclude those with corresponding TodayTasks instances.
             self.fields['department_notice_board'].queryset = Department_notice.objects.filter(
                 Q(assigned_to=user) & ~Q(id__in=assigned_task_ids)
             )        
@@ -34,22 +31,12 @@ class TodayTaskForm(forms.ModelForm):
             print(assigned_task_ids)
             self.fields['department_notice_board'].queryset = Department_notice.objects.filter(id__in=assigned_task_ids)
             
-        # if  'today_task_edit':
-        #     self.fields['department_notice_board'].widget.attrs['readonly'] = True
-        
 
+
+
+#notice board form for the hr
 class NoticeboardForm(forms.ModelForm):
     image = forms.ImageField(required=False)
-
-    # def clean_image(self):
-    #     image = self.cleaned_data.get('image')
-    #     if image:
-    #         img = Image.open(image)
-    #         max_width =1000
-    #         max_height =1000
-    #         if img.width > max_width or img.height >max:
-    #             raise forms.ValidationError('The image size exceeds the allowed limit')
-    #     return image
     class Meta:
         model = Notice_board
         fields = ("title", "subject", "content", "image")
@@ -59,13 +46,11 @@ class NoticeboardForm(forms.ModelForm):
             self.fields["image"].required = False
 
 
+
+#department notice form for the manager
 class DepartmentnoticeForm(forms.ModelForm):
     title = forms.CharField(required=False)
     subject = forms.CharField(required=False)
-    # assigned_to = forms.ModelChoiceField(queryset=User.objects.filter(is_worker=True),required=False)
-
-    
-    
 
     class Meta:
         model = Department_notice
@@ -83,6 +68,8 @@ class DepartmentnoticeForm(forms.ModelForm):
         elif user_role == 'testing':
             self.fields['assigned_to'].queryset = User.objects.filter(is_worker=True,is_testing=True)
 
+
+#leaveform for the Users
 class LeaveForm(forms.ModelForm):
     start_date = forms.DateField(widget=DateInput)
     end_date = forms.DateField(widget=DateInput,required=False)
@@ -94,24 +81,7 @@ class LeaveForm(forms.ModelForm):
 
 
 
-class PaychequeForm(forms.ModelForm):
-    
-
-    class Meta:
-        model = Paycheque
-        fields = (
-            "employee",
-            "incentives",
-            "deductions",
-            "month_salary",
-            
-        )
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.fields['user'].required = False
-
-
+#form to update the userdetails
 class UserProfileForm(forms.ModelForm):
     profile_picture = forms.ImageField(required=False, widget=forms.FileInput)
     income = forms.FloatField()

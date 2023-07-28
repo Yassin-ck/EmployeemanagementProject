@@ -7,6 +7,7 @@ from django.utils  import timezone
 from django.contrib.auth.models import Group
 # Create your models here.
 
+#model for registering users
 class User(AbstractUser) :
     class Role(models.TextChoices):
         HR = 'HR','Hr'
@@ -58,7 +59,7 @@ class User(AbstractUser) :
             super().save(*args, **kwargs)  
         
         
-        
+#model for twofactorauthentication        
 class Code(models.Model):
     number = models.CharField(max_length=255,blank=True,null=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)  
@@ -71,7 +72,7 @@ class Code(models.Model):
         
         
 
-
+#model for blocked users
 class FailedLoginAttempt(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     attempt_count = models.PositiveIntegerField(default=1)

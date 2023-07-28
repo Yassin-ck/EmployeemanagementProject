@@ -1,33 +1,30 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .forms import NoticeboardForm,DepartmentnoticeForm,LeaveForm,PaychequeForm,UserProfileForm,TodayTaskForm
+from .forms import NoticeboardForm,DepartmentnoticeForm,LeaveForm,UserProfileForm,TodayTaskForm
 from .models import Notice_board,Department_notice,LeaveApply,TodayTasks,UserProfile,Paycheque
 from django.contrib import messages
 from accounts.models import User
 from accounts.forms import UserForm
-# from PIL import Image
 from django.shortcuts import get_object_or_404
+#decoratos for authentication and aithorization
 from employeemanagmentsystem.decorators import allowed_users,dashboard_authentication
+
 from django.views.decorators.cache import never_cache
 from django.urls import path
 from datetime import date,timedelta
 from attendence.models import AttendenceTable
 import calendar
 
-# PDF generate
-
+# PDF generation
 from django.http import FileResponse
 import io
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import Table, TableStyle,SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 
 
 # Create your views here.
-
+#notice board view for every users 
 @dashboard_authentication
 def Notice_board_view(request):
     user = request.user
@@ -42,29 +39,12 @@ def Notice_board_view(request):
         print(notice_boards)
     else:
         notice_boards = None
-        # print(user__is_testing)
     return render (request,'dashboard/notice_board.html',{'notice_boards':notice_boards})
 
-# @dashboard_authentication
-# def Notice_board_single_view(request, id=0):
-#     notice_board = Notice_board.objects.get(pk=id)
-#     comments = notice_board.notice_board_comment.all().order_by('-created_at')
-#     print(notice_board)
-#     print(comments)
-#     notice = get_object_or_404(Notice_board, pk=id)
-#     if request.method == 'POST':
-#         comment=request.POST.get('comment')
-#         if comment:
-#             comment_instance = TodayTasks.objects.create(
-#                 user=request.user,
-#                 notice_board = notice_board ,
-#                 comment=comment
-#             )
-#         return redirect('dashboard_single',id=notice_board.id)       
-#     return render(request, 'dashboard/hr_depart_notice_single.html', {'notice': notice, 'comments': comments})
      
 
 
+#notice board creation and updation by hr
 @allowed_users(allowed_roles=['HumanResource'])
 def Notice_board_hr_crud(request, id=0):
     user = request.user
@@ -83,15 +63,16 @@ def Notice_board_hr_crud(request, id=0):
             form = NoticeboardForm(request.POST,request.FILES,instance=notice)
    
         if form.is_valid():
-            # print(form)
             notice=form.save(commit=False)
             notice.user = request.user
             notice.save()
             
             return redirect('dashboard') 
-        # messages.error(request,'hell')  
         return HttpResponse('image size is too big')
-    
+  
+  
+  
+#noticeboard delete by hr   
 @allowed_users(allowed_roles=['HumanResource'])         
 def Notice_board_hr_delete(request,id):
 
@@ -105,7 +86,10 @@ def Notice_board_hr_delete(request,id):
         
     return render(request,'dashboard/Delete.html')
     
-                
+ 
+ 
+ 
+#department notice view by users               
 @dashboard_authentication
 def Department_notice_view(request): 
     user = request.user 
@@ -118,24 +102,9 @@ def Department_notice_view(request):
         department_notices = Department_notice.objects.filter(assigned_to__is_testing=True)
     return render(request,'dashboard/department_notice.html',{'department_notices':department_notices})
  
- 
-# @dashboard_authentication
-# def Department_notice_single_view(request, id=0):   
-#     notices = Department_notice.objects.get(pk=id)
-#     comments_dept = notices.department_comment.all().order_by('-created_at')
- 
-#     if request.method == 'POST':
-#         department_instance = TodayTasks.objects.create(
-#             user=request.user,
-#             department_notice_board=notices,
-#             comment=request.POST.get('comment')
-#         )
-#         return redirect('department_notice_single_view', id=notices.id)
-
-#     return render(request, 'dashboard/dept_notice_single.html', {'notices': notices, 'comments_dept': comments_dept})
 
     
-   
+#department notice creation and updation by the manager 
 @allowed_users(allowed_roles=['manager'])         
 def Department_notice_crud(request, id=0):
     user = request.user
@@ -173,6 +142,8 @@ def Department_notice_crud(request, id=0):
                          
 
 
+
+#department notice deletion by the manager
 @allowed_users(allowed_roles=['manager'])         
 def Department_notice_delete(request,id=0):
         if request.method == 'POST':
@@ -185,6 +156,8 @@ def Department_notice_delete(request,id=0):
         return render(request,'dashboard/Delete.html')
     
 
+
+#to apply leave for the users and also for editing
 @dashboard_authentication
 def Leave_user_form(request, id=0): 
     today = date.today()
@@ -248,6 +221,8 @@ def Leave_user_form(request, id=0):
             return render(request,'dashboard/leave_form.html',{'form':form})
             
 
+
+#to view every leave application to the specified hr and view there on leave applications
 @dashboard_authentication
 def Leave_user_view(request,id=0):
     user = request.user
@@ -268,12 +243,8 @@ def Leave_user_view(request,id=0):
     return render(request,'dashboard/leave_view.html',{'leaves':leaves})
 
 
-# def Leave_filtered(request):
-#     leaves_filterted = LeaveApply.objects.filter(status__exact='Pending')
-#     return render(request,'dashboard/leave_view.html',{'leave_filtered':leaves_filterted})
 
-
-
+#leave deletion by the user
 @never_cache
 def Leave_user_delete(request,id=0):
     if request.method == 'POST':
@@ -328,6 +299,7 @@ def Leave_approval_rejection(request, id):
 
 
 
+#to view the daily tasks to assigned worker and submitted tasks to teh specified manager
 @allowed_users(allowed_roles=['worker','manager'])
 def Today_task_view(request,id=0):
     user = request.user
@@ -342,13 +314,12 @@ def Today_task_view(request,id=0):
         user = User.objects.get(pk=id)
         
         today_task = TodayTasks.objects.filter(user=user) 
-        # for task in today_task:
-        #     print(task.department_notice_board)
-            
+
     return render(request,'dashboard/today_task_view.html',{'today_task':today_task})
     
    
-    
+ 
+#to submit the updation about the daily task of worker assigned by the manager   
 @allowed_users(allowed_roles=['worker'])
 @dashboard_authentication
 def Today_task_personal(request, id=0):
@@ -383,6 +354,8 @@ def Today_task_personal(request, id=0):
 
     return render(request, 'dashboard/today_task_form.html', {'department_task': unmatched_tasks, 'form': form})
 
+
+#edit the daily task which already submitted by worker
 def Today_task_edit(request,id=0):
     user_edit=request.user
     today_task = TodayTasks.objects.get(pk=id)
@@ -403,7 +376,9 @@ def Today_task_edit(request,id=0):
         else:
             print(form.errors)
     return render(request,'dashboard/today_task_form.html',{'form':form})
-    
+ 
+ 
+#delete the dailiy task which is alredy submitted  by the user
 def Today_task_delete(request,id=0):
     if request.method == 'POST':
         tasks = TodayTasks.objects.get(pk=id)
@@ -413,60 +388,8 @@ def Today_task_delete(request,id=0):
             
 
 
-# @allowed_users(allowed_roles=['HumanResource'])         
-# def Paycheque_form(request,id=0):
-#     if request.method == 'POST':
-#         if id == 0:
-            
-           
-#             form = PaychequeForm(request.POST)
-#         else:
-#             cheques = Paycheque.objects.get(pk=id)
-#             form = PaychequeForm(request.POST,instance=cheques)
-#         # print('hii')   
-#         if form.is_valid():
-#             print(form)
-#             paycheque = form.save(commit=False)
-#             paycheque.employer = request.user
-#             # payc
-#             paycheque.salary = Paycheque.Total_salary(paycheque)
-#             paycheque.save()
-#             return render(request,'accounts/confirmation_messages.html')
-#         else:
-#             print(form.errors)
-#             return HttpResponse('hb')
-#     else:
-#         if id == 0:
-#             form = PaychequeForm()
-#         else:
-#             cheques = Paycheque.objects.get(pk=id)
-#             form = PaychequeForm(instance=cheques)
-#         return render (request,'dashboard/paycheque_form.html',{'form':form})
 
-    
-
-
-            
-# @dashboard_authentication
-# def Paycheque_view(request,id=0):
-#     if id == 0: 
-#         cheques = Paycheque.objects.all()
-#     else:
-#         user = get_object_or_404(User,pk=id)
-#         cheques = Paycheque.objects.filter(user=user) 
-#     return render (request,'dashboard/paycheque_view.html',{'cheques':cheques})
-
-# def Paycheque_delete(request,id=0):
-#     if request.method == 'POST':
-#         cheques = Paycheque.objects.get(pk=id)
-#         cheques.delete()
-#         return redirect('paycheque_form')
-#     return render(request,'dashboard/Delete.html')
-
-
-
-
-
+#to update the user details ,crud only by the hr
 @allowed_users(allowed_roles=['HumanResource'])         
 def user_profile_form(request, id=0):
     hr_superuser = request.user.is_authenticated and request.user.is_hr 
@@ -517,6 +440,8 @@ def user_profile_form(request, id=0):
 
 
 
+
+#to view the profile of every users by their hr and there own profile to everyone
 @dashboard_authentication
 def user_profile_view(request,id=0):
     user = request.user
@@ -539,6 +464,9 @@ def user_profile_view(request,id=0):
         print(user_profile)
         return render (request,'dashboard/user_profile_single_view.html',{'user_profile':user_profile})
 
+
+
+#userprofile deletion by the hr
 @allowed_users(allowed_roles=['HumanResource'])         
 def user_profile_delete(request,id=0):
     if request.method =='POST':
@@ -549,19 +477,10 @@ def user_profile_delete(request,id=0):
     return render (request,'dashboard/Delete.html')
 
 
-# def Salary_slip_view(request,id):
-#     user = User.objects.get(pk=id)
-#     paycheque = Paycheque.objects.get(employee = user)
-#     print(paycheque.deductions)
-#     return render(request,'dashboard/paycheque_form.html',{'paycheque':paycheque})
 
 
-# from django.http import HttpResponse
-# from django.template.loader import get_template
-# from xhtml2pdf import pisa
 
-# from .models import Paycheque, AttendenceTable
-
+#autogenerating salary slip
 def Salary_slip(request, id):
     print(type(id))
     
@@ -613,13 +532,10 @@ def Salary_slip(request, id):
 
     present_data = employee_attendance.present_data
     absent_data = employee_attendance.absent_data
-    print(present_data)
-    print(absent_data)
+   
     present_days = len(present_data)
     absent_days = len(absent_data)
-    print(present_days)
-    print(absent_days)
-
+  
     gross_salary = present_days * one_day_salary
     print(gross_salary)
 
@@ -663,7 +579,7 @@ def Salary_slip(request, id):
     return render (request,'dashboard/paycheque_view.html',{'paycheque_slip':paycheque_slip,'year':year,'month_name':month_name,'month':month})
 
 
-
+#pdf download for there own salary slip using reportlab
 def Paycheque_pdf(request, id):
     user = User.objects.get(pk=id)
     today = date.today()

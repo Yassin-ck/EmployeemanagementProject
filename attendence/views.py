@@ -7,6 +7,8 @@ from .models import AttendenceTable
 from django.contrib import messages
 from employeemanagmentsystem.decorators import allowed_users, dashboard_authentication
 
+
+#first function works when user select the attendence 
 def Attendence_url(request):
     today = datetime.date.today()
     year = today.year
@@ -16,6 +18,9 @@ def Attendence_url(request):
         return redirect('attendence_view',year=year,month=month,id=user.id)
     return redirect('attendence_table', year=year, month=month, id=user.id)
 
+
+
+#Atttendence table for marking the attendence of users
 @dashboard_authentication
 def Attendence_table(request, year, month, *args, **kwargs):
     user = request.user
@@ -32,14 +37,8 @@ def Attendence_table(request, year, month, *args, **kwargs):
     # Get the day of the week for the first day (0: Monday, 6: Sunday)
     first_day_weekday = first_day.weekday()
 
-    print('month',month_day)
-    print('num -d',num_days)
-    print('weekda',weekdays)
-    print('firstd',first_day)
-    print('firstdaywee',first_day_weekday)
    
     days = [''] * first_day_weekday + list(range(1, num_days + 1))
-    print('ddd',days)
 
     # Group the days into rows with 7 days in each row
     num_rows = (num_days + first_day_weekday + 6) // 7  # Add 6 to ensure all days are included in rows
@@ -54,7 +53,6 @@ def Attendence_table(request, year, month, *args, **kwargs):
                 if date_obj.strftime('%A') in ['Saturday','Sunday']:
                     weekends.append(row_num)
                     
-    print(weekends)
     absent_list = []
     try:
         attendence = AttendenceTable.objects.get(employee=user,year=year,month=month)
@@ -78,6 +76,8 @@ def Attendence_table(request, year, month, *args, **kwargs):
     })
 
 
+
+#marked attendence go through here save to the database
 @dashboard_authentication
 def Attendence_table_marks(request, number,id):
     user = request.user
@@ -114,13 +114,10 @@ def Attendence_table_marks(request, number,id):
             absent_list = attendence_table.absent_data
             if number not in absent_list :
                 if number in present_list :
-                    # absent_list.append(number)
                     present_list.remove(number)
                 
                 else:
-                    # if number in absent_list:
-                    #     absent_list.remove(number)
-                    # else:
+ 
                     present_list.append(number)
             
             # Save the updated attendance data to the database
@@ -133,6 +130,8 @@ def Attendence_table_marks(request, number,id):
 
 
 
+
+#table for viewing the whole attendence of the employees to their department Hr
 @allowed_users(allowed_roles=['HumanResource'])
 def Attendence_hr_view(request,year,month,id):
     

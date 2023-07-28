@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 import secrets
 import re
+from employee_dashboard.models import UserProfile
 from .models import Code,User
 from django.urls import path
 from django.utils import timezone
@@ -24,23 +25,20 @@ from django.core.mail import EmailMessage
 from django.contrib.auth.tokens import default_token_generator
 #Blocking user After 3 failed Login Attempt
 # from BruteBuster.models import FailedAttempt
-from employee_dashboard.models import UserProfile
-# from django.utils  import timezone 
 
 # authentication
 from django.contrib.auth.models import Group
 from employeemanagmentsystem.decorators import unauthenticated_user,allowed_users
-
-
-
 from django.db.models import Max
 
-# Create your views here.
+
+
+ 
 @login_required(login_url='login')
 def homePage(request):
     return render(request,'accounts/home.html')
 
-
+#registration by hr
 @allowed_users(allowed_roles=['HumanResource'])
 def Registration(request):
     hr_superuser = request.user.is_authenticated and request.user.is_superuser
@@ -56,10 +54,8 @@ def Registration(request):
             mobile = form.cleaned_data['mobile']
             role = form.cleaned_data['role']
             email = form.cleaned_data['email']
-            # employeeCode = form.cleaned_data['username']
-            print('hii')
+          
             try:
-                print('hii1')
                 User.objects.get(email=email)
                 messages.error(request, 'User with the same email already exists')
             except User.DoesNotExist:
@@ -154,10 +150,9 @@ def Hr_departmenting(request,id=0):
             return redirect('register')
     form = DepartmentHrForm()
     return render(request,'accounts/hr_departmenting.html',{'form':form})
-        # department = request.POST.get('department')
         
     
-
+#login by users
 @unauthenticated_user
 def loginPage(request, id=0):
     if request.method == 'POST':
@@ -181,6 +176,7 @@ def loginPage(request, id=0):
             except (FailedLoginAttempt.DoesNotExist, FailedLoginAttempt.MultipleObjectsReturned):
                 messages.error(request, 'unauthorized entry')
         else:
+            # unblock_by_login
             if 'unblock_by_login' in request.path:
                 login(request, user)
                 user = User.objects.get(pk=id)
@@ -192,10 +188,6 @@ def loginPage(request, id=0):
                 # Regular login, redirect to two-factor authentication
                 request.session['pk'] = user.pk
                 return redirect('twoFactorAuthentication')
-
-
-        
-
     else:
         form = LoginForm()
 
@@ -205,7 +197,7 @@ def loginPage(request, id=0):
 
 
 
-
+#reset password
 def reset_password(request,id=0):
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -224,11 +216,13 @@ def reset_password(request,id=0):
                 
         except User.DoesNotExist:
             pass
-        
-        
-        
+               
     return render(request,'accounts/reset_password.html')
 
+
+
+
+#verification through email for resetting password
 def verify(request,uidb64,token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -245,6 +239,8 @@ def verify(request,uidb64,token):
         return redirect ('login')
  
  
+ 
+#password resetting when first login and unblocked users
 def EmialPassowrdreset(request,id=0):
     if request.method == 'POST' and 'passwordresetemail' in request.path:
         email = request.POST.get('email')
@@ -270,14 +266,18 @@ def EmialPassowrdreset(request,id=0):
         else:
             user.save()
             return redirect ('login')
-            
-        
+                    
     return render(request,'accounts/email_reset_password.html')
+
+
+
 
 def Login_Id_Pass_email(request):
     messages.success(request,'Email Sended Succesfully') 
 
     return render(request,'accounts/confirmation_messages.html')
+
+
 
 
 def resetpasswordemail_verificationPage(request):
@@ -297,6 +297,7 @@ def TwoFactorAuthentication(request):
 
         if not request.POST:
             try:
+                Code.objects.filter(user=user).delete()
                 verification_sid = send_sms(user.mobile)
                 print('veri_sid',verification_sid)
                 code = Code.objects.create(
@@ -339,6 +340,8 @@ def TwoFactorAuthentication(request):
         messages.error(request, 'User not found')
 
     return render(request, 'accounts/twofactor_auth.html', {'form': form})
+ 
+ 
           
 def logoutPage(request):
     logout(request)
@@ -352,6 +355,7 @@ def Blocked_email(request,id):
     return render (request,'accounts/confirmation_messages.html',{'user':user})
 
 
+#blocked user sending mail to hr
 def Blocked_send_email(request,id):
     user_blocked = User.objects.get(pk=id)
     if user_blocked.is_frontend:
@@ -379,6 +383,8 @@ def Blocked_send_email(request,id):
         messages.success(request,'You will get an email if its confirmed by the hr')
         return redirect('login')
 
+
+
 def unblock(request,uid,token):
     try:
         user = User.objects.get(email=uid)
@@ -395,12 +401,18 @@ def unblock(request,uid,token):
     except:
         return redirect ('home')
     
+
+
  
 def unblock_user_page(request,id):
     user = User.objects.get(pk=id)
     print('jhgf',user)
     return render(request,'accounts/unblock_user.html',{'user':user}) 
 
+
+
+
+#hr deciding wheather unblok the user or remove him
 def unblocking_or_deleting_user(request,id):
     
     if 'unblock_blocked_user' in request.path:
@@ -432,9 +444,14 @@ def unblocking_or_deleting_user(request,id):
                 return redirect('delete_user_confirmed')
         except:
             return HttpResponse('something went wrong')
+ 
+ 
+ 
     
 def unblock_confirmed(request):
     return render(request,'accounts/confirmation_unblock_delete.html')
+
+
 
 
 def unblocked(request,uidb64,token):

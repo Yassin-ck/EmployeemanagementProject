@@ -4,6 +4,7 @@ from .models import User,Code
 import re
 from django.urls import path
 
+#Registration and user profileUpdattion Form
 class UserForm(forms.ModelForm):
     mobile = forms.CharField(max_length=13)
     is_superuser = forms.CheckboxInput()
@@ -66,13 +67,15 @@ class UserForm(forms.ModelForm):
     
   
  
+#selecting department for new registerd hr 
 class DepartmentHrForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('department',)
 
  
-            
+   
+#user login form         
 class LoginForm(forms.ModelForm):
     username = forms.CharField(required=True)
     password = forms.CharField(widget=forms.PasswordInput)
@@ -94,7 +97,8 @@ class LoginForm(forms.ModelForm):
             'password':'Password'
         }
         
-            
+
+#two factor authentication form          
 class CodeForm(forms.ModelForm):
     number =  forms.CharField(label='Code',required=False)
    
@@ -102,44 +106,4 @@ class CodeForm(forms.ModelForm):
         model = Code
         fields = ('number',)
             
-            
-        
-        # self.fields['username'].required = False
-        # self.fields['role'].empty_label = 'select'
-        # self.fields['department'].empty_label = 'select'
-        # if self.is_bound and self.is_valid():
-        #     if self.cleaned_data.get('department') == 'HR':
-        #         self.fields['role'].widget.attrs['disabled'] = 'disabled'
-        # self.fields['username'].help_text = None
-        # if is_registration:
-        #     self.fields['first_name'].required = True
-        #     self.fields['last_name'].required = True
-        #     self.fields['email'].required = True
-        #     self.fields['department'].required = True
-        #     self.fields['mobile'].required = True
-        # else:
-        #     fields_to_delete = []
-        #     for field_name in self.fields:
-        #         if field_name not in ['username', 'password']:
-        #             fields_to_delete.append(field_name)
-
-        #     for field_name in fields_to_delete:
-        #         del self.fields[field_name]
-        # if not is_registration:
-        #     fields_to_delete = ['first_name', 'last_name', 'email', 'department', 'mobile']
-        #     for field_name in fields_to_delete:
-        #         del self.fields[field_name]
-   
-            
-            
-            
-# class LoginForm(UserForm):
-#     class Meta(UserForm.Meta):
-       
-#         fields = ('email','password')
-    
-    
-#     def __init__(self,*args,**kwargs):
-#         super().__init__(*args,**kwargs)
-# self.fields['username'].help_text = None
-      
+           

@@ -6,7 +6,7 @@ from django.db.models import JSONField
 
 
 
-
+#Attendence for Users
 class AttendenceTable(models.Model):
      
     employee = models.ForeignKey(User,on_delete=models.CASCADE)
