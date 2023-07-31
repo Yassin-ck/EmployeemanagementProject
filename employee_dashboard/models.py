@@ -1,10 +1,9 @@
 from django.db import models
 from accounts.models import User
 from PIL import Image
-from datetime import datetime
-from django.shortcuts import HttpResponse
-from django.core.files.storage import default_storage
-from django.utils.timezone import now
+from storages.backends.s3boto3 import S3Boto3Storage
+from django.core.files import File
+import io
 # Create your models here.
 
 
@@ -25,15 +24,19 @@ class Notice_board(models.Model):
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
         if self.image:
-            img = Image.open(self.image.path)
-            
-            if img.height > 85 or img.width > 85:
-                output_size = (85,85)
-                img.thumbnail(output_size)
-                img.save(self.image.path)
-        else:
-            super().save(*args, **kwargs)
-  
+            storage = S3Boto3Storage()
+            with storage.open(self.image.name, 'rb') as image_file:
+                img = Image.open(image_file)
+                if img.height > 85 or img.width > 85:
+                    output_size = (85, 85)
+                    img.thumbnail(output_size)
+                    # Save the resized image back to the S3 bucket
+                    in_memory_file = io.BytesIO()
+                    img.save(in_memory_file, format=img.format)
+                    in_memory_file.seek(0)
+                    # Use the storage backend's save() method to save the resized image
+                    storage.save(self.image.name, File(in_memory_file))
+        
     
     def __str__(self):
         return self.title
@@ -59,15 +62,18 @@ class Department_notice(models.Model):
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
         if self.image:
-            img = Image.open(self.image.path)
-            
-            if img.height > 85 or img.width > 85:
-                output_size = (85,85)
-                img.thumbnail(output_size)
-                img.save(self.image.path)
-        else:
-            super().save(*args, **kwargs)         
-
+            storage = S3Boto3Storage()
+            with storage.open(self.image.name, 'rb') as image_file:
+                img = Image.open(image_file)
+                if img.height > 85 or img.width > 85:
+                    output_size = (85, 85)
+                    img.thumbnail(output_size)
+                    # Save the resized image back to the S3 bucket
+                    in_memory_file = io.BytesIO()
+                    img.save(in_memory_file, format=img.format)
+                    in_memory_file.seek(0)
+                    # Use the storage backend's save() method to save the resized image
+                    storage.save(self.image.name, File(in_memory_file))
 
             
 #leave model to apply for leave            
@@ -148,12 +154,18 @@ class UserProfile(models.Model):
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
         if self.profile_picture:
-            img = Image.open(self.profile_picture.path)
-            
-            if img.height > 85 or img.width > 85:
-                output_size = (85,85)
-                img.thumbnail(output_size)
-                img.save(self.profile_picture.path)
+            storage = S3Boto3Storage()
+            with storage.open(self.image.name, 'rb') as image_file:
+                img = Image.open(image_file)
+                if img.height > 85 or img.width > 85:
+                    output_size = (85, 85)
+                    img.thumbnail(output_size)
+                    # Save the resized image back to the S3 bucket
+                    in_memory_file = io.BytesIO()
+                    img.save(in_memory_file, format=img.format)
+                    in_memory_file.seek(0)
+                    # Use the storage backend's save() method to save the resized image
+                    storage.save(self.image.name, File(in_memory_file))
 
     
 

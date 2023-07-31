@@ -1,7 +1,6 @@
 from django import forms
-from .models import Notice_board,Department_notice,LeaveApply,TodayTasks,Paycheque,UserProfile
+from .models import Notice_board,Department_notice,LeaveApply,TodayTasks,UserProfile
 from accounts.models import User
-from PIL import Image
 import re
 from django.urls import re_path 
 from django.db.models import Q

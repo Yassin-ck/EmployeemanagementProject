@@ -1,7 +1,6 @@
 from twilio.rest import Client
 from django.conf import settings
 from twilio.base.exceptions import TwilioRestException
-from django.contrib import messages
 
 # Find your Account SID and Auth Token at twilio.com/console
 # and set the environment variables. See http://twil.io/secure

@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect
 import calendar
 import datetime
-from django.http import HttpResponse
 from accounts.models import User
 from .models import AttendenceTable
-from django.contrib import messages
 from employeemanagmentsystem.decorators import allowed_users, dashboard_authentication
 
 

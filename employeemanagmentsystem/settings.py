@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 
-import logging
 
 from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -197,30 +196,24 @@ SERVICE_SID = os.getenv('service_sid')
 
 
 
-# ...
+# STORAGES = {"staticfiles": {"BACKEND": "storages.backends.s3boto3.S3StaticStorage"}}
 
-# # Logging Configuration
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#         },
-#         'file': {
-#             'class': 'logging.FileHandler',
-#             'filename': 'logs/debug.log',  # Specify the path to the log file
-#         },
-#     },
-#     'root': {
-#         'handlers': ['console', 'file'],
-#         'level': 'DEBUG',  # Set the desired logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-#     },
-#     'loggers': {
-#         '__name__': {
-#             'handlers': ['console', 'file'],
-#             'level': 'DEBUG',  # Set the desired logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-#             'propagate': True,
-#         },
-#     },
-# }
+# from django-storages.backends.s3boto3 import S3Boto3Storage
+
+#s3 bucket
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'employeemanagementproject'
+AWS_S3_SIGNATURE_NAME = 's3v4',
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL =  None
+AWS_S3_VERITY = True
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+}

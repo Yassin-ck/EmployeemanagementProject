@@ -1,8 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-import random
-import secrets
-from datetime import datetime
 from django.utils  import timezone 
 from django.contrib.auth.models import Group
 # Create your models here.

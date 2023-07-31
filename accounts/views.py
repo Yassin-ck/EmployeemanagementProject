@@ -7,8 +7,6 @@ import secrets
 import re
 from employee_dashboard.models import UserProfile
 from .models import Code,User
-from django.urls import path
-from django.utils import timezone
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate,login,logout
 from django.views.decorators.cache import never_cache
