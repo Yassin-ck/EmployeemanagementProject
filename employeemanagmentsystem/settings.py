@@ -94,15 +94,31 @@ WSGI_APPLICATION = 'employeemanagmentsystem.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'employeemanagementsystem',
+#         'USER': 'postgres',
+#         'PASSWORD':POSTGRESPASSWORD,
+#         'HOST':'localhost'
+#     }
+# }
+
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'employeemanagementsystem',
-        'USER': 'postgres',
-        'PASSWORD':POSTGRESPASSWORD,
-        'HOST':'localhost'
+        'NAME': 'employeemanagement',
+        'USER': 'adminsuperuser',
+        'PASSWORD': 'adminsuperuser',
+        'HOST': 'employeemanagement.c6sam1ivlft9.eu-north-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
+
+
+
 
 # custom Authentication with brutebuster
 # AUTHENTICATION_BACKENDS = [
