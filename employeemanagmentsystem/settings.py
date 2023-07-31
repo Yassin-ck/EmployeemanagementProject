@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRETKEY = os.getenv('SECRETKEY')
-POSTGRESPASSWORD = os.getenv('POSTGRESPASSWORD')
+# POSTGRESPASSWORD = os.getenv('POSTGRESPASSWORD')
 EMAILHOSTPASSWORD = os.getenv('EMAILHOSTPASSWORD')
 EMAIL = os.getenv('EMAIL')
 
@@ -108,10 +108,10 @@ WSGI_APPLICATION = 'employeemanagmentsystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'employeemanagement',
-        'USER': 'adminsuperuser',
-        'PASSWORD': 'adminsuperuser',
-        'HOST': 'employeemanagement.c6sam1ivlft9.eu-north-1.rds.amazonaws.com',
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASSWORD'),
+        'HOST': os.getenv('HOST'),
         'PORT': '5432',
     }
 }
