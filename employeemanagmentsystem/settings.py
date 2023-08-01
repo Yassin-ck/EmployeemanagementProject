@@ -38,7 +38,7 @@ SECRET_KEY = f'django-insecure-{SECRETKEY}'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -108,8 +108,8 @@ WSGI_APPLICATION = 'employeemanagmentsystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('NAME'),
-        'USER': os.getenv('USER'),
+        'NAME': 'employeemanagement',
+        'USER': 'adminsuperuser',
         'PASSWORD': os.getenv('PASSWORD'),
         'HOST': os.getenv('HOST'),
         'PORT': '5432',
