@@ -94,7 +94,10 @@
       <div class="card bg-light">
         <div class="card-body">
           <h4 class="card-title text-center" style="color: #3f51b5;">{{ user_profile.user.username }}</h4>
+          {% if user_profile.profile_picture %}
+          
           <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+          {% endif %}
           <div class="row mt-4">
             <div class="col-md-6">
               <div class="profile-info">
