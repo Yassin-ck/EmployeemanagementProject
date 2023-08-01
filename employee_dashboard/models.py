@@ -155,7 +155,7 @@ class UserProfile(models.Model):
         super().save(*args,**kwargs)
         if self.profile_picture:
             storage = S3Boto3Storage()
-            with storage.open(self.image.name, 'rb') as image_file:
+            with storage.open(self.profile_picture.name, 'rb') as image_file:
                 img = Image.open(image_file)
                 if img.height > 85 or img.width > 85:
                     output_size = (85, 85)
@@ -165,7 +165,7 @@ class UserProfile(models.Model):
                     img.save(in_memory_file, format=img.format)
                     in_memory_file.seek(0)
                     # Use the storage backend's save() method to save the resized image
-                    storage.save(self.image.name, File(in_memory_file))
+                    storage.save(self.profile_picture.name, File(in_memory_file))
         
             
     
