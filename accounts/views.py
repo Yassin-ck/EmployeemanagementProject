@@ -100,10 +100,11 @@ def Registration(request):
                             worker_group = Group.objects.get(name='worker')
                             user.groups.add(worker_group)
                         user.save()
-    
+                        print('hiiiiiiiii')
                         profile = UserProfile()
                         profile.user_id = user.id
                         profile.save()
+                        print('konaa')
                         if user.role == User.Role.HR:
                             user.is_active = False
                             user.is_testing =False

@@ -141,7 +141,7 @@ class UserProfile(models.Model):
     state = models.CharField(max_length=20, unique=False)
     country = models.CharField(max_length=20, unique=False)
     alternative_contact_number = models.CharField(max_length=10)
-    profile_picture = models.ImageField(upload_to="userprofile/",default='userprofile/default.profilepicture.jpg')
+    profile_picture = models.ImageField(upload_to="userprofile/",null=True,blank=True)
     experience = models.CharField(max_length=255)
     
     
@@ -166,7 +166,8 @@ class UserProfile(models.Model):
                     in_memory_file.seek(0)
                     # Use the storage backend's save() method to save the resized image
                     storage.save(self.image.name, File(in_memory_file))
-
+        
+            
     
 
 #for paycheque
