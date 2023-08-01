@@ -21,24 +21,7 @@ load_dotenv() #take environment variable form .env
 import os 
 
 
-# BASE_DIR = Path(__file__).resolve().parent.parent
-
-# from unipath import Path
-
-BASE_DIR         =  Path(__file__)._accessor(3)
-MEDIA_ROOT       =  BASE_DIR.child('media')
-STATIC_ROOT      =  BASE_DIR.child('static')
-
-TEMPLATE_DIRS    = (
-    BASE_DIR.child('templates'),
-)
-
-STATICFILES_DIRS = (
-    BASE_DIR.child('myapp').child('static'),
-)
-
-STATIC_URL         = '/static/'
-MEDIA_URL          = '/media/'
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRETKEY = os.getenv('SECRETKEY')
@@ -181,19 +164,19 @@ USE_TZ = True
 
 
 # set media file 
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 
 
-# STATIC_URL = '/static/'
-# STATIC_ROOT = '/var/www/staticfiles/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR,'static')
-# ]
+STATIC_URL = '/static/'
+STATIC_ROOT = '/var/www/staticfiles/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'static')
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
