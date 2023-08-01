@@ -25,7 +25,7 @@ import os
 
 # from unipath import Path
 
-BASE_DIR         =  Path(__file__).ancestor(3)
+BASE_DIR         =  Path(__file__)._accessor(3)
 MEDIA_ROOT       =  BASE_DIR.child('media')
 STATIC_ROOT      =  BASE_DIR.child('static')
 
