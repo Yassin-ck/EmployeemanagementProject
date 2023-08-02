@@ -2,15 +2,60 @@
 
 {% block content %}
 
-<div class="container" style="width:740px; padding:20px;">
+<style>
+    /* Default styles for the card */
+    .card {
+        width: 740px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Media query for small screens */
+    @media screen and (max-width: 767px) {
+        .card {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .card-header {
+            font-size: 24px;
+        }
+
+        .form-row {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .input-group {
+            flex-basis: 100%;
+            margin-bottom: 10px;
+        }
+
+        .input-group-text {
+            width: 100%;
+            text-align: left;
+        }
+
+        .form-control {
+            width: 100%;
+        }
+
+        .input-group-append {
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="container">
     <div class="card text">
         <center>
             <div class="card-header">
-                <h3><strong>Employee Registration</strong></h3></div>
+                <h3><strong>Employee Registration</strong></h3>
+            </div>
         </center>
         <div class="card-body">
             <h5 align="left">New User Registration Form</h5>
-            <h5 align="left">Department : {{request.user.department}}</h5>
+            <h5 align="left">Department: {{ request.user.department }}</h5>
             <hr color="Blue">
 
             <!-- validate email -->
@@ -22,26 +67,26 @@
                             <div class="input-group-text">Department</div>
                         </div>
                         {{ form.department }}
-
                     </div>
+                </div>
+                <center>
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">Register</button>
-            </div>
-        </form>
-    </div> <!-- /close Card body -->
+                    </div>
+                </center>
+            </form>
+        </div> <!-- /close Card body -->
 
-    <div class="card-footer text-muted">
-        <table width="100%">
-            <tr>
-                <td align="left" width="20%">
-                </td>
-                <td align="right" width="30%">
-                </td>
-            </tr>
-        </table>
-        {% include "includes/messages.html" %}
+        <div class="card-footer text-muted">
+            <table width="100%">
+                <tr>
+                    <td align="left" width="20%"></td>
+                    <td align="right" width="30%"></td>
+                </tr>
+            </table>
+            {% include "includes/messages.html" %}
+        </div>
     </div>
-</div>
 </div>
 
 {% endblock content %}
