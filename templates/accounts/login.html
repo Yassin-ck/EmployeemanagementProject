@@ -10,27 +10,29 @@
         padding: 20px;
     }
 
-    /* Media query for small screens (max-width 576px) */
-    @media screen and (max-width: 576px) {
+    /* Media query for small screens */
+    @media screen and (max-width: 767px) {
         .card {
             width: 100%;
             padding: 10px;
         }
 
         .card-header {
-            font-size: 20px;
+            font-size: 24px;
         }
 
         .form-row {
-            flex-wrap: wrap;
+            display: flex;
+            flex-direction: column;
         }
 
         .input-group {
-            flex-basis: 100%;
+            margin-bottom: 10px;
         }
 
         .input-group-text {
-            width: 100px;
+            width: 100%;
+            text-align: left;
         }
 
         .input-group-append {
@@ -39,7 +41,7 @@
     }
 </style>
 
-<div class="container" style="width:740px; padding:20px;">
+<div class="container">
     <div class="card text">
         <center>
             <div class="card-header">
@@ -53,13 +55,15 @@
             <form method="post" action="{% url 'login' %}" class="form-signin" autocomplete="off">
                 {% csrf_token %}
                 <div class="form-row">
-                    <div class="input-group col-md-6 mb-2">
+                    <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">Username</div>
                         </div>
                         <input type="text" name="username" required class="form-control" placeholder="Enter your username">
                     </div>
-                    <div class="input-group col-md-6 mb-2">
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">Password</div>
                         </div>
