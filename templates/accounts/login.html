@@ -2,11 +2,49 @@
 
 {% block content %}
 
+<style>
+    /* Default styles for the card */
+    .card {
+        width: 740px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Media query for small screens (max-width 576px) */
+    @media screen and (max-width: 576px) {
+        .card {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .card-header {
+            font-size: 20px;
+        }
+
+        .form-row {
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex-basis: 100%;
+        }
+
+        .input-group-text {
+            width: 100px;
+        }
+
+        .input-group-append {
+            text-align: center;
+        }
+    }
+</style>
+
 <div class="container" style="width:740px; padding:20px;">
     <div class="card text">
         <center>
             <div class="card-header">
-                <h3><strong>Employee Login</strong></h3></div>
+                <h3><strong>Employee Login</strong></h3>
+            </div>
         </center>
         <div class="card-body">
             <h5 align="left">Login to your account</h5>
@@ -38,10 +76,8 @@
         <div class="card-footer text-muted">
             <table width="100%">
                 <tr>
-                    <td align="left" width="20%">
-                    </td>
-                    <td align="right" width="30%">
-                    </td>
+                    <td align="left" width="20%"></td>
+                    <td align="right" width="30%"></td>
                 </tr>
             </table>
         </div>
@@ -49,4 +85,5 @@
 </div>
 
 {% include "includes/messages.html" %}
+
 {% endblock content %}

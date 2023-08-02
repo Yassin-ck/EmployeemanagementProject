@@ -1,6 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    /* Default styles for the card */
+    .card {
+        width: 740px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Media query for small screens (max-width 576px) */
+    @media screen and (max-width: 576px) {
+        .card {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .card-header {
+            font-size: 20px;
+        }
+
+        .form-row {
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex-basis: 100%;
+            margin-bottom: 10px;
+        }
+
+        .input-group-prepend {
+            flex-basis: 30%;
+        }
+
+        .input-group-text {
+            width: 100%;
+            text-align: left;
+        }
+
+        .form-control {
+            width: 100%;
+        }
+
+        .input-group-append {
+            text-align: center;
+        }
+    }
+</style>
+
 <div class="container" style="width: 740px; padding: 20px;">
     <div class="card text">
         <center>
