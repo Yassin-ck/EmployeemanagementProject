@@ -4,24 +4,30 @@
 <style>
     /* Default styles for the card */
     .card {
-        width: 740px;
+        width: 100%;
+        max-width: 740px;
         margin: 0 auto;
         padding: 20px;
+    }
+
+    .card-header {
+        font-size: 24px;
     }
 
     /* Media query for small screens (max-width 576px) */
     @media screen and (max-width: 576px) {
         .card {
-            width: 100%;
             padding: 10px;
         }
 
-        .card-header {
-            font-size: 20px;
+        .card-body {
+            padding-top: 15px;
+            padding-bottom: 5px;
         }
 
         .form-row {
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .input-group {
@@ -48,7 +54,7 @@
     }
 </style>
 
-<div class="container" style="width: 740px; padding: 20px;">
+<div class="container">
     <div class="card text">
         <center>
             <div class="card-header">
@@ -58,7 +64,7 @@
 
         <div class="card-body">
             <h5 align="left">New User Registration Form</h5>
-            <h5 align="left">Department : {{ request.user.department }}</h5>
+            <h5 align="left">Department: {{ request.user.department }}</h5>
             <hr color="Blue">
 
             <form method="post" action="{% url 'register' %}" class="form-signin" autocomplete="off">
