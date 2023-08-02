@@ -167,7 +167,7 @@ def Leave_user_form(request, id=0):
 
     user_leave = LeaveApply.objects.filter(user=request.user, status='Pending', start_date__gte=today, end_date__lte=date(year, month, end_day))
 
-    if user_leave.exists():
+    if user_leave.exists() and 'leave_form_edit' not in request.path :
         messages.error(request, 'Your Leave Request is Pending')
         return redirect('leave_personal_view', id=request.user.id)
     else:

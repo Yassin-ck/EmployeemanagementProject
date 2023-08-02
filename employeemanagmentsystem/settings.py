@@ -40,6 +40,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+
+#csrf 
 CSRF_TRUSTED_ORIGINS = ["https://staffhub.cloud"]
 # Application definition
 
