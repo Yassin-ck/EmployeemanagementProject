@@ -101,7 +101,6 @@ def Registration(request):
                         user.save()
                         profile = UserProfile()
                         profile.user_id = user.id
-                        profile.profile_picture = 'userprofile/default.profilepicture.jpg'
                         profile.save()
                         if user.role == User.Role.HR:
                             user.is_active = False
