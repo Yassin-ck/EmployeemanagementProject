@@ -38,11 +38,11 @@ SECRET_KEY = f'django-insecure-{SECRETKEY}'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["13.51.198.225","127.0.0.1", "127.0.0.1:8000","www.staffhub.cloud","staffhub.cloud"]
 
 
 #csrf 
-CSRF_TRUSTED_ORIGINS = ["https://staffhub.cloud"]
+CSRF_TRUSTED_ORIGINS = ["https://www.staffhub.cloud","https://staffhub.cloud"]
 # Application definition
 
 INSTALLED_APPS = [
