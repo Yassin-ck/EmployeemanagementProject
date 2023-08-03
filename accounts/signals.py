@@ -7,6 +7,6 @@ def post_save_generator_code(sender,instance,created,*args,**kwargs):
 #when superuser is created then automatically his profile will be created by using signals
     if created:
         if instance.is_superuser:
-            UserProfile.objects.create(user=instance)
-        
-            
+            user = UserProfile.objects.create(user=instance)
+            user.profile_picture = 'userprofile/default.profilepicture.jpg'
+            user.save()

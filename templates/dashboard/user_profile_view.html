@@ -47,7 +47,9 @@
     {% for user in user_profiles %}
     <a class="profile-link" href="{% url 'user_profile_single_view' user.id %}">
       <div class="profile-card">
+      {% if user.profile_picture %}     
         <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+      {% endif %}
         <h4>{{ user }}</h4>
       </div>
     </a>

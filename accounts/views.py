@@ -103,6 +103,7 @@ def Registration(request):
                         print('hiiiiiiiii')
                         profile = UserProfile()
                         profile.user_id = user.id
+                        profile.profile_picture = 'userprofile/default.profilepicture.jpg'
                         profile.save()
                         print('konaa')
                         if user.role == User.Role.HR:
