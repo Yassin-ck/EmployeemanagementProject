@@ -44,7 +44,6 @@ def Registration(request):
         form = UserForm(superuser=hr_superuser)
     else:
         form = UserForm(request.POST,superuser=hr_superuser)
-        print('hii4')
         
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
@@ -100,12 +99,10 @@ def Registration(request):
                             worker_group = Group.objects.get(name='worker')
                             user.groups.add(worker_group)
                         user.save()
-                        print('hiiiiiiiii')
                         profile = UserProfile()
                         profile.user_id = user.id
                         profile.profile_picture = 'userprofile/default.profilepicture.jpg'
                         profile.save()
-                        print('konaa')
                         if user.role == User.Role.HR:
                             user.is_active = False
                             user.is_testing =False
@@ -160,8 +157,6 @@ def loginPage(request, id=0):
         EmployeeCode = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=EmployeeCode, password=password)
-        print(user)
-        print(request.path)
         if user is None:
             try:
                 failed_user = FailedLoginAttempt.objects.get(user__username=EmployeeCode)
@@ -228,7 +223,6 @@ def verify(request,uidb64,token):
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk=uid)
          
-        print(user)
     except (User.DoesNotExist,TypeError,ValueError,OverflowError):
         user = None
         
@@ -245,7 +239,6 @@ def EmialPassowrdreset(request,id=0):
     if request.method == 'POST' and 'passwordresetemail' in request.path:
         email = request.POST.get('email')
         user = User.objects.get(pk=id)
-        print(user)
         if email == user.email:
             try:
                 user=User.objects.get(pk=id)
@@ -299,7 +292,6 @@ def TwoFactorAuthentication(request):
             try:
                 Code.objects.filter(user=user).delete()
                 verification_sid = send_sms(user.mobile)
-                print('veri_sid',verification_sid)
                 code = Code.objects.create(
                     number=verification_sid,
                     user=user
@@ -314,18 +306,14 @@ def TwoFactorAuthentication(request):
             # Retrieve the stored verification SID
             try:
                 verification_sid = Code.objects.get(user=user).number
-                print(verification_sid)
                 # Verify the user-entered code against the stored verification SID
                 verification_status = verify_user_code(verification_sid, number)
-                print('status',verification_status)
                 if verification_status == 'approved':
                     # Verification is successful, proceed with authentication
                     user.is_active = True
                     user.save()
                     login(request, user)
-                    print('codeee')
                     Code.objects.filter(user=user).delete()
-                    print('codeee_delete')
 
                     return redirect('home')
                 else:
@@ -364,7 +352,6 @@ def Blocked_send_email(request,id):
         hr_users = User.objects.filter(is_backend=True,is_hr=True)
     else:
         hr_users = User.objects.filter(is_testing=True,is_hr=True)
-        print(hr_users)
     current_site = get_current_site(request)
     mail_subject = 'Account Blocked' 
     for hr_user in hr_users:
@@ -388,9 +375,7 @@ def Blocked_send_email(request,id):
 def unblock(request,uid,token):
     try:
         user = User.objects.get(email=uid)
-        print(user)
-        print(uid)
-        print(token)
+
         if user is not None and default_token_generator.check_token(user,token):
             if request.user.is_authenticated:
                 return redirect('unblock_user_page',id=user.id)
@@ -406,7 +391,6 @@ def unblock(request,uid,token):
  
 def unblock_user_page(request,id):
     user = User.objects.get(pk=id)
-    print('jhgf',user)
     return render(request,'accounts/unblock_user.html',{'user':user}) 
 
 
