@@ -88,9 +88,9 @@
   }
 </style>
 <div class="container">
-  <button onclick="window.location.href='{% url 'logout' %}'" class="btn-logout">
+  <a onclick="return('Do you Want to Logout?')" href='{% url 'logout' %}' class="btn-logout">
     <i class="fas fa-sign-out-alt"></i>
-  </button>
+  </a>
   <div class="content-section">
     <div class="m-5">
       <center>
