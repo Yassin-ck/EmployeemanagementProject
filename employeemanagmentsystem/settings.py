@@ -43,6 +43,7 @@ ALLOWED_HOSTS = ["13.51.198.225","127.0.0.1", "127.0.0.1:8000","www.staffhub.clo
 
 #csrf 
 CSRF_TRUSTED_ORIGINS = ["https://www.staffhub.cloud","https://staffhub.cloud"]
+
 # Application definition
 
 INSTALLED_APPS = [

@@ -1,77 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<style>
-    /* Default styles for the card */
-    .card {
-        width: 740px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    /* Media query for small screens */
-    @media screen and (max-width: 767px) {
-        .card {
-            width: 100%;
-            padding: 10px;
-        }
-
-        .card-header {
-            font-size: 24px;
-        }
-
-        .form-row {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-group {
-            margin-bottom: 10px;
-        }
-
-        .input-group-text {
-            width: 100%;
-            text-align: left;
-        }
-
-        .input-group-append {
-            text-align: center;
-        }
-    }
-</style>
-
 <div class="container">
-    <div class="card text">
+    <div class="card">
         <center>
             <div class="card-header">
+                <img id="profile-img" class="profile-img-card" src="">
                 <h3><strong>Employee Login</strong></h3>
             </div>
         </center>
         <div class="card-body">
-            <h5 align="left">Login to your account</h5>
-            <hr color="Blue">
-
+            <hr>
             <form method="post" action="{% url 'login' %}" class="form-signin" autocomplete="off">
                 {% csrf_token %}
-                <div class="form-row">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Username</div>
-                        </div>
-                        <input type="text" name="username" required class="form-control" placeholder="Enter your username">
-                    </div>
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">EmployeeCode</label>
+                    <input type="text" name="username" required class="form-control" placeholder="Enter your empcode">
                 </div>
-                <div class="form-row">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Password</div>
-                        </div>
-                        <input type="password" name="password" required class="form-control" placeholder="Enter your password">
-                    </div>
+                <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}">Password</label>
+                    <input type="password" name="password" required class="form-control" placeholder="Enter your password">
                 </div>
 
-                <div class="input-group-append">
+                <div class="text-center mt-4">
                     <button class="btn btn-primary" type="submit">Login</button>
                 </div>
             </form>
@@ -88,6 +39,61 @@
     </div>
 </div>
 
-{% include "includes/messages.html" %}
+<style>
+    /* Global styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
 
+    .container {
+        max-width: 740px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+    }
+
+    h3 {
+        margin: 0;
+    }
+
+    form {
+        margin-top: 20px;
+    }
+
+    form label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    form input[type="text"],
+    form input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    form button {
+        padding: 12px 20px;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* Media queries for responsiveness */
+    @media screen and (max-width: 480px) {
+        .container {
+            max-width: 100%;
+        }
+    }
+
+</style>
+
+{% include "includes/messages.html" %}
 {% endblock content %}
