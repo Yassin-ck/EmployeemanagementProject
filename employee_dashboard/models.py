@@ -21,6 +21,7 @@ class Notice_board(models.Model):
     class Meta:
         ordering = ['-updated_at','-created_at']
     
+    
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
         if self.image:
@@ -36,6 +37,7 @@ class Notice_board(models.Model):
                     in_memory_file.seek(0)
                     # Use the storage backend's save() method to save the resized image
                     storage.save(self.image.name, File(in_memory_file))
+
         
     
     def __str__(self):
