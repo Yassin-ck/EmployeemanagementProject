@@ -38,7 +38,7 @@ class Notice_board(models.Model):
                         img.save(in_memory_file, format='JPEG')  # Or use 'PNG' if the image is in PNG format
                         in_memory_file.seek(0)
                         # Use the storage backend's save() method to save the resized image
-                        storage.save(image_name, File(in_memory_file)
+                        storage.save(image_name, File(in_memory_file))
 
             super().save(*args, **kwargs)
         
