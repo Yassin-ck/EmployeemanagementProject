@@ -4,6 +4,8 @@ from PIL import Image
 from storages.backends.s3boto3 import S3Boto3Storage
 from django.core.files import File
 import io
+from io import BytesIO
+
 # Create your models here.
 
 
@@ -20,22 +22,25 @@ class Notice_board(models.Model):
     
     class Meta:
         ordering = ['-updated_at','-created_at']
-    
-    def save(self,*args,**kwargs):
-        super().save(*args,**kwargs)
-        if self.image:
-            storage = S3Boto3Storage()
-            with storage.open(self.image.name, 'rb') as image_file:
-                img = Image.open(image_file)
-                if img.height > 85 or img.width > 85:
-                    output_size = (85, 85)
-                    img.thumbnail(output_size)
-                    # Save the resized image back to the S3 bucket
-                    in_memory_file = io.BytesIO()
-                    img.save(in_memory_file, format=img.format)
-                    in_memory_file.seek(0)
-                    # Use the storage backend's save() method to save the resized image
-                    storage.save(self.image.name, File(in_memory_file))
+        
+    def save(self, *args, **kwargs):
+            if self.image:
+                storage = S3Boto3Storage()
+                image_name = self.image.name
+
+                # Check if the image has changed before resizing and saving
+                if self._state.adding or self.image != self._original_image:
+                    img = Image.open(self.image)
+                    if img.height > 85 or img.width > 85:
+                        output_size = (85, 85)
+                        img.thumbnail(output_size)
+                        in_memory_file = BytesIO()
+                        img.save(in_memory_file, format='JPEG')  # Or use 'PNG' if the image is in PNG format
+                        in_memory_file.seek(0)
+                        # Use the storage backend's save() method to save the resized image
+                        storage.save(image_name, File(in_memory_file), headers={'Content-Type': 'image/jpeg'})
+
+            super().save(*args, **kwargs)
         
     
     def __str__(self):
