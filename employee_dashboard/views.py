@@ -480,17 +480,29 @@ def user_profile_delete(request,id=0):
 
 
 
-#autogenerating salary slip
-def Salary_slip(request, id):
-    print(type(id))
+def Salary_slip(request,id,list_id):
+    try:
+        paycheque_slip = Paycheque.objects.get(pk=list_id)
+        year = paycheque_slip.year
+        month = paycheque_slip.month
+        print(month)
+        month_name = calendar.month_name[month]
+
+    except Paycheque.DoesNotExist:
+        return HttpResponse('something went wrong')
     
-    # Get the user by ID, or return 404 if not found
+    return render (request,'dashboard/paycheque_view.html',{'paycheque_slip':paycheque_slip,
+                                                            'year':year,
+                                                            'month_name':month_name,
+                                                            'month':month})
+
+def paycheque_full_view(request,id):
     user = get_object_or_404(User, pk=id)
     user_profile = user.userprofile
 
     # Get the current date
     today = date.today()
-   
+
     # Get the first day of the current month
     first_day_of_month = today.replace(day=1)
 
@@ -532,10 +544,13 @@ def Salary_slip(request, id):
 
     present_data = employee_attendance.present_data
     absent_data = employee_attendance.absent_data
-   
+    print(present_data)
+    print(absent_data)
     present_days = len(present_data)
     absent_days = len(absent_data)
-  
+    print(present_days)
+    print(absent_days)
+
     gross_salary = present_days * one_day_salary
     print(gross_salary)
 
@@ -549,11 +564,10 @@ def Salary_slip(request, id):
 
     total_month_salary = gross_salary + incentives
     deductions = absent_days * one_day_salary
-
-    try:
-        paycheque_slip = Paycheque.objects.get(employee=user,year=year,month=month)
-    except Paycheque.DoesNotExist:
-        if today.day >= 5:
+    if today.day >= 5:
+        try:
+            paycheque_slip = Paycheque.objects.get(employee=user,year=year,month=month)
+        except Paycheque.DoesNotExist:
             paycheque_slip = Paycheque.objects.create(
                 year=year,month=month,
                 employee=user,
@@ -562,35 +576,15 @@ def Salary_slip(request, id):
                 deductions=deductions,
                 month_salary=total_month_salary,
             )
-            paycheque_slip.save()
-        else:
-            last_month = today.replace(day=1) - timedelta(days=1)
-            prev_month_year = last_month.year
-            prev_month = last_month.month
-
-            try:
-                # Retrieve the paycheque slip for the previous month
-                paycheque_slip = Paycheque.objects.get(employee=user, year=prev_month_year, month=prev_month)
-            except Paycheque.DoesNotExist:
-                # Handle the case when the paycheque slip for the previous month does not exist
-                return HttpResponse(f"Paycheque slip for the previous month doesn't exist.")
-  
-    
-    return render (request,'dashboard/paycheque_view.html',{'paycheque_slip':paycheque_slip,'year':year,'month_name':month_name,'month':month})
+            paycheque_slip.save()   
+    paycheque_list = Paycheque.objects.filter(employee=user)           
+    return render (request,'dashboard/paycheque_list.html',{'paycheque_list':paycheque_list})
 
 
-#pdf download for there own salary slip using reportlab
+def month_name(month):
+    return calendar.month_name[month]
+
 def Paycheque_pdf(request, id):
-    user = User.objects.get(pk=id)
-    today = date.today()
-
-    # Get the current year and month
-    last_month = today - timedelta(days=today.day)
-
-    # Get the last month's year and month
-    year = last_month.year
-    month = last_month.month
-
     buffer = io.BytesIO()
 
     doc = SimpleDocTemplate(buffer, pagesize=letter)
@@ -605,11 +599,14 @@ def Paycheque_pdf(request, id):
 
     # Fetch the Paycheque object
     try:
-        paycheques = Paycheque.objects.get(employee=user, year=year, month=month)
+        paycheques = Paycheque.objects.get(pk=id)
+        user = paycheques.employee
     except Paycheque.DoesNotExist:
-        return HttpResponse(f"No Paycheque data available for {last_month.strftime('%B %Y')}")
+        return HttpResponse(f"No Paycheque data available ")
 
     # Content
+    month = month_name (paycheques.month)
+
     elements = []
 
     title = Paragraph("Salary Slip", title_style)
@@ -622,7 +619,7 @@ def Paycheque_pdf(request, id):
         ["Employee Code:", user.username, ""],
         ["Department:", user.department, ""],
         ["Role:", user.role, ""],
-        ["Month:", last_month.strftime('%B %Y'), ""],
+        ["Month:", month, ""],
         ["Gross Salary:", f"${paycheques.gross_month_salary}", ""],
         ["Incentives:", f"${paycheques.incentives}", ""],
         ["Deductions:", f"${paycheques.deductions}", ""],
@@ -635,6 +632,9 @@ def Paycheque_pdf(request, id):
         ('FONTSIZE', (0, 0), (-1, -1), 12),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
         ('TOPPADDING', (0, 0), (-1, -1), 8),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('GRID', (0, 0), (-1, -1), 1, 'black'),
     ]))
 
     elements.append(table)

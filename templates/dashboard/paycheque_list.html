@@ -1,0 +1,82 @@
+{% extends "includes/sidebar.html" %}
+
+{% block contents %}
+<style>
+  /* Add custom styles here */
+  .paycheque-item-container {
+    margin: 0 auto; /* Center the container horizontally */
+    max-width: 800px; /* Adjust the max-width as per your design */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Align items to the left */
+  }
+
+  .paycheque-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+    text-align: center;
+    margin: 15px;
+    width: 30%; /* Adjust the width as per your requirement */
+    transition: transform 0.5s ease; /* Animation applied to the container */
+  }
+
+  .paycheque-item hr {
+    margin: 5px 0; /* Add margin around the <hr> element */
+    border: 1px solid #ddd; /* Add border to the <hr> element */
+  }
+
+  .paycheque-item h3 {
+    font-size: 20px; /* Increase the heading font size */
+    margin: 10px 0; /* Add some margin above and below the heading */
+    color: #007BFF; /* Heading text color */
+  }
+
+  .paycheque-item p {
+    font-size: 14px; /* Increase the body font size */
+    color: #6C757D; /* Body text color */
+    margin: 2px 0; /* Add some margin above and below each body paragraph */
+    pointer-events: none; /* Disable mouse events for p elements */
+  }
+
+  .paycheque-item a {
+    display: block;
+    text-decoration: none;
+    color: #007BFF; /* Link color */
+    font-size: 16px; /* Increase the link font size */
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  /* Animation applied to the link */
+  .paycheque-item a:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a slightly stronger shadow on hover */
+  }
+
+  @media (max-width: 768px) {
+    .paycheque-item {
+      width: 100%; /* Make the items take full width on smaller screens */
+    }
+  }
+</style>
+
+{% load static %}
+
+<div class="paycheque-item-container">
+  {% for list in paycheque_list %}
+    <div class="paycheque-item">
+      <h3>Slary Slip</h3>
+      <hr> <!-- Add the <hr> element here -->
+      <p><strong>Month:</strong> {{ list.month }}</p>
+      <p><strong>Year:</strong> {{ list.year }}</p>
+      <p><strong>Month Salary:</strong> {{ list.month_salary }}</p>
+      <a href="{% url 'paycheque_view' id=user.id list_id=list.id %}">
+        <i class="fas fa-money-bill-wave"></i>
+        View Paycheque
+      </a>
+    </div>
+  {% endfor %}
+</div>
+{% endblock contents %}

@@ -1,90 +1,29 @@
 {% extends "includes/sidebar.html" %}
 
 {% block contents %}
-<style>
-  /* Styles for the Pay Slip page */
-  .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-  }
-
-  h4 {
-    font-size: 28px;
-    margin-bottom: 15px;
-    text-align: center;
-    color: #3f51b5;
-  }
-
-  p {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #333;
-  }
-
-  .btn-download {
-    display: block;
-    width: 200px;
-    margin: 20px auto;
-    text-align: center;
-    padding: 12px;
-    border: 2px solid #8d6e63;
-    border-radius: 30px;
-    text-decoration: none;
-    color: #8d6e63;
-    font-size: 18px;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-    background-color: transparent;
-  }
-
-  .btn-download:hover {
-    background-color: #8d6e63;
-    color: #fff;
-  }
-
-  hr {
-    margin: 20px 0;
-    border: 1px solid #ddd;
-  }
-
-  @media (max-width: 768px) {
-    /* Adjustments for small screens */
-    .container {
-      padding: 10px;
-    }
-
-    h4 {
-      font-size: 24px;
-    }
-
-    p {
-      font-size: 16px;
-    }
-
-    .btn-download {
-      width: 150px;
-      font-size: 16px;
-    }
-  }
-</style>
-
 <center>
-  <div class="container">
-    <h4>Pay Slip</h4>
-    {{ month_name }} {{ year }}
-    <hr>
-    <p><strong>EmpCode:</strong> {{ paycheque_slip.employee }}</p>
-    <p><strong>Full Name:</strong> {{ paycheque_slip.employee.first_name }} {{ paycheque_slip.employee.last_name }}</p>
-    <p><strong>Role:</strong> {{ paycheque_slip.employee.role }}</p>
-    <p><strong>Gross Salary:</strong> {{ paycheque_slip.gross_month_salary }}</p>
-    <p><strong>Department:</strong> {{ paycheque_slip.employee.department }}</p>
-    <p><strong>Incentives:</strong> {{ paycheque_slip.incentives }}</p>
-    <p><strong>Deductions:</strong> {{ paycheque_slip.deductions }}</p>
-    <p><strong>Total month Salary:</strong> {{ paycheque_slip.month_salary }}</p>
+
+  <div class="d-flex flex-column container">
+    <div class="row gap-5">
+      <div class="container">
+        
+        <h4>Pay Slip</h4>
+
+        {{month_name}} {{year}}
+        <hr>
+      <p><strong>Employee-Code : </strong> {{ paycheque_slip.employee }} </p>
+      <p><strong>Full Name : </strong> {{ paycheque_slip.employee.first_name }} {{ paycheque_slip.employee.last_name }}</p>
+      <p><strong>Role : </strong> {{ paycheque_slip.employee.role }} </p>
+      <p><strong>Gross Salary : </strong> {{ paycheque_slip.gross_month_salary }}</p>
+      <p><strong>Department : </strong> {{ paycheque_slip.employee.department }} </p>
+      
+      <p><strong>Incentives : </strong> {{ paycheque_slip.incentives }}</p>
+      <p><strong>Deductions : </strong> {{ paycheque_slip.deductions }}</p>
+      <p><strong>Total month Salary  : </strong> {{ paycheque_slip.month_salary}}</p>
+      
+    </div>
   </div>
-  <a class="btn-download" href="{% url 'paycheque_pdf' id=user.id %}">Download <i class="fa-regular fa-circle-down"></i></a>
+</div>
+<a class="btn btn-secondary border bordeeless" href="{% url 'paycheque_pdf' id=paycheque_slip.id  %}">Download <i class="fa-regular fa-circle-down"></i>  </a>
 </center>
 {% endblock contents %}

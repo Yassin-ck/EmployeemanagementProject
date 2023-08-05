@@ -27,7 +27,7 @@
                     {% elif request.user.is_worker %}
                     <a href="{% url 'today_task_personal_form' id=user.id  %}">Today Tasks</a>
                     {% endif %}
-                    <a href="{% url 'paycheque_view' id=user.id %}">View Paycheques</a>
+                    <a href="{% url 'paycheque_list' id=user.id %}">View Paycheques</a>
                     {% if request.user.is_authenticated and request.user.is_hr %}
                     <a href="{% url 'user_profile_view'  %}">User Profile</a>
                     {% endif %}
